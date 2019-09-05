@@ -1,4 +1,4 @@
 # basic
 
 Opengl
-Lunux
+Linux
