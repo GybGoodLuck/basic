@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <chrono>
 
 #include "../object/Plane.h"
 
@@ -18,6 +19,8 @@ public:
 private:
     int m_width;
     int m_height;
+
+    int m_fps;
 
     std::vector<std::shared_ptr<Object>> m_renderList;
 

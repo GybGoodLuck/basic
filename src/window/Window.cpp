@@ -58,6 +58,8 @@ void Window::removeObject(const std::shared_ptr<Object>& object) {
 
 }
 
+int count = 0;
+auto start = std::chrono::system_clock::now();
 void Window::renderLoop() {
 
     while(!glfwWindowShouldClose(m_GLWindow)) {
@@ -70,9 +72,21 @@ void Window::renderLoop() {
         {
             object->render();
         }
-        
+
         glfwSwapBuffers(m_GLWindow);
         glfwPollEvents();
+
+        auto end = std::chrono::system_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+        count++;
+
+        if (int(duration.count()) >= 1000) {
+            m_fps = count++;
+            std::cout << "FPS : " << m_fps << std::endl;
+            start = std::chrono::system_clock::now();
+            count = 0;
+        }
     }
 
     glfwTerminate();
