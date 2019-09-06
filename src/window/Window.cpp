@@ -42,6 +42,10 @@ Window::Window(int width, int height) : m_width(width), m_height(height) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return;
     }
+
+    // Set OpenGL options
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Window::addObject(const std::shared_ptr<Object>& object) {
@@ -71,6 +75,9 @@ void Window::renderLoop() {
         for (auto object : m_renderList)
         {
             object->render();
+            std::string fps = "FPS ";
+            fps = fps + std::to_string(m_fps);
+            object->setText(fps);
         }
 
         glfwSwapBuffers(m_GLWindow);
@@ -83,7 +90,6 @@ void Window::renderLoop() {
 
         if (int(duration.count()) >= 1000) {
             m_fps = count++;
-            std::cout << "FPS : " << m_fps << std::endl;
             start = std::chrono::system_clock::now();
             count = 0;
         }

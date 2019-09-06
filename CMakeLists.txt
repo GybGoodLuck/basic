@@ -3,6 +3,9 @@ project(basic VERSION 0.1.0)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
+set(PYTHON_DIRECTORY "${CMAKE_SOURCE_DIR}/config/config.py")
+execute_process(COMMAND python ${PYTHON_DIRECTORY})
+
 find_package(GLM REQUIRED)
 message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")
 find_package(GLFW3 REQUIRED)
@@ -30,10 +33,11 @@ set(LIBS ${LIBS} GLAD)
 set(NAME basic)
 
 set(EXECUTABLE_SOURCE
-    src/image/Image.cpp
+    src/characters/Characters.cpp
     src/window/Window.cpp
     src/object/Object.cpp
     src/object/Plane.cpp
+    src/object/Font.cpp
     src/vertices/Vertices.cpp
     src/GLUtils.cpp
     src/main.cpp
@@ -41,8 +45,11 @@ set(EXECUTABLE_SOURCE
 
 add_executable(${NAME} ${EXECUTABLE_SOURCE})
 target_link_libraries(${NAME} ${LIBS})
+FIND_LIBRARY(FREETYPE libfreetype.so.6.17.1 lib/)
+target_link_libraries(${NAME} ${FREETYPE})
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
+include_directories(${CMAKE_SOURCE_DIR}/config)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

@@ -6,6 +6,7 @@ typedef unsigned int EBO;
 
 enum VerticesType {
     TRIANGLE = 0,
+    FONT,
     PLANE,
     Cube,
 };

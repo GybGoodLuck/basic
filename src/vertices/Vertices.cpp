@@ -1,26 +1,31 @@
 #include "Vertices.h"
 
-VAO Vertices::getVAO(VerticesType type) {
-    auto vao = findVAO(type);
+VerticesBuffer Vertices::getVAO(VerticesType type) {
+    auto buffer = findVAO(type);
 
-    if (!vao) {
+    if (!buffer.isVaild()) {
         switch (type)
         {
+            case FONT:
+                buffer = bindFont();
+                std::cout << "bindFont vao : " << buffer.vao << " vbo : " << buffer.vbo << std::endl;
+                m_vaoMap.insert({FONT, buffer});
+                break;
             case PLANE:
-                vao = bindPlane();
-                std::cout << "bindPlane vao : " << vao << std::endl;
-                m_vaoMap.insert({PLANE, vao});
+                buffer = bindPlane();
+                std::cout << "bindPlane vao : " << buffer.vao << " vbo : " << buffer.vbo << std::endl;
+                m_vaoMap.insert({PLANE, buffer});
                 break;
             default:
                 break;
         }
     }
 
-    return vao;
+    return buffer;
 }
 
-VAO Vertices::findVAO(VerticesType type) {
-    VAO vao = 0;
+VerticesBuffer Vertices::findVAO(VerticesType type) {
+    VerticesBuffer buffer;
 
     auto it = m_vaoMap.find(type);
 
@@ -28,19 +33,18 @@ VAO Vertices::findVAO(VerticesType type) {
         return it->second;
     } 
 
-    return vao;
+    return buffer;
 }
 
-VAO Vertices::bindPlane() {
-    VAO vao;
-    VBO vbo;
+VerticesBuffer Vertices::bindPlane() {
+    VerticesBuffer buffer;
 
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
+    glGenVertexArrays(1, &buffer.vao);
+    glGenBuffers(1, &buffer.vbo);
 
-    glBindVertexArray(vao);
+    glBindVertexArray(buffer.vao);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer.vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
@@ -49,13 +53,27 @@ VAO Vertices::bindPlane() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    return vao;
+    return buffer;
 }
 
-static std::shared_ptr<Vertices> s_vertices;
-static std::mutex s_mutex;
+VerticesBuffer Vertices::bindFont() {
+    VerticesBuffer buffer;
+
+    glGenVertexArrays(1, &buffer.vao);
+    glGenBuffers(1, &buffer.vbo);
+    glBindVertexArray(buffer.vao);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer.vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    return buffer;
+}
 
 std::shared_ptr<Vertices> Vertices::getInstance() {
+    static std::shared_ptr<Vertices> s_vertices;
+    static std::mutex s_mutex;
     if (s_vertices) return s_vertices; 
     std::lock_guard<std::mutex> locker(s_mutex);
     if (!s_vertices) {

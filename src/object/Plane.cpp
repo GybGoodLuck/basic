@@ -1,16 +1,21 @@
 #include "Plane.h"
-#include <stdio.h>
+#include "../characters/Characters.h"
+#include <Config.h>
 
 Plane::Plane() {
     m_program = createProgram(verticesSource, fragmentSource);
-    m_vao = Vertices::getInstance()->getVAO(PLANE);
-    m_texture = loadTexture("/home/yuanbin/opengl/workspace/basic/resource/image/yzq.jpg");
-    glBindTexture(GL_TEXTURE_2D, m_texture);
+    m_vao = Vertices::getInstance()->getVAO(PLANE).vao;
+    m_vbo = Vertices::getInstance()->getVAO(PLANE).vbo;
+    std::string path = "image/yzq.jpg";
+    path = RES_PATH + path;
+    m_texture = loadTexture(path.c_str());
 }
 
 void Plane::render() {
+    glBindTexture(GL_TEXTURE_2D, m_texture);
     glUseProgram(m_program);
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <chrono>
 
-#include "../object/Plane.h"
+#include "../object/Object.h"
 
 class Window {
 
@@ -15,6 +15,10 @@ public:
 
     void addObject(const std::shared_ptr<Object>& object);
     void removeObject(const std::shared_ptr<Object>& object);
+
+    int getFPS() { 
+        return m_fps;
+    }
 
 private:
     int m_width;

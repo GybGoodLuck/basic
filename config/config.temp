@@ -1,0 +1,7 @@
+#pragma once
+
+#include <string>
+
+static std::string ROOT_PATH = "${ROOT_PATH}";
+static std::string SRC_PATH = "${SRC_PATH}";
+static std::string RES_PATH = "${RES_PATH}";

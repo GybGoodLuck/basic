@@ -10,16 +10,26 @@
 
 #include "VerticesInfo.h"
 
+struct VerticesBuffer {
+    VAO vao = 0;
+    VBO vbo = 0;
+
+    bool isVaild() {
+        return (vao != 0) && (vbo != 0);
+    }
+};
+
 class Vertices {
 
 public:
     static std::shared_ptr<Vertices> getInstance();
-    VAO getVAO(VerticesType type);
+    VerticesBuffer getVAO(VerticesType type);
 
 
 private:
-    std::map<VerticesType, VAO> m_vaoMap;
+    std::map<VerticesType, VerticesBuffer> m_vaoMap;
 
-    VAO bindPlane();
-    VAO findVAO(VerticesType type);
+    VerticesBuffer bindPlane();
+    VerticesBuffer bindFont();
+    VerticesBuffer findVAO(VerticesType type);
 };
