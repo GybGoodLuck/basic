@@ -5,7 +5,11 @@
 class Plane : public Object {
 
 public:
-    Plane();
+    Plane(const std::string& name);
+
+    ObjectType type() override {
+        return PLANE;
+    }
 
     void render() override;
 

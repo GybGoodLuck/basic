@@ -7,23 +7,20 @@
 class Object {
 
 public:
-    Object();
+    Object(const std::string& name);
     virtual ~Object() {};
 
+    virtual ObjectType type() = 0;
     virtual void render() = 0;
 
-    virtual void setText(const std::string& text) {
-        m_text = text;
-    }
-
 protected:
-    GLuint m_program;
+    std::string m_name;
+
     VAO m_vao;
     VBO m_vbo;
+
+    GLuint m_program;
     GLuint m_texture;
 
     glm::mat4 m_projection;
-
-    std::string m_text = "FPS ";
-
 };

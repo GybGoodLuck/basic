@@ -59,7 +59,6 @@ void Window::removeObject(const std::shared_ptr<Object>& object) {
             m_renderList.erase(it++);
         }
     }
-
 }
 
 int count = 0;
@@ -74,10 +73,8 @@ void Window::renderLoop() {
         
         for (auto object : m_renderList)
         {
+            update(object);
             object->render();
-            std::string fps = "FPS ";
-            fps = fps + std::to_string(m_fps);
-            object->setText(fps);
         }
 
         glfwSwapBuffers(m_GLWindow);
@@ -89,11 +86,32 @@ void Window::renderLoop() {
         count++;
 
         if (int(duration.count()) >= 1000) {
-            m_fps = count++;
+            m_fps = count;
             start = std::chrono::system_clock::now();
             count = 0;
         }
     }
 
     glfwTerminate();
+}
+
+void Window::update(const std::shared_ptr<Object>& object) {
+
+    switch (object->type())
+    {
+        case FONT:
+            {
+                std::string fps = "FPS ";
+                fps = fps + std::to_string(m_fps);
+                auto font = std::static_pointer_cast<Font>(object);
+                
+                if (font->getText().compare("FPS")) {
+                    font->setText(fps);
+                }
+            }
+            break;
+        
+        default:
+            break;
+    }
 }

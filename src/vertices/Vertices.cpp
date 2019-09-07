@@ -1,6 +1,6 @@
 #include "Vertices.h"
 
-VerticesBuffer Vertices::getVAO(VerticesType type) {
+VerticesBuffer Vertices::getVAO(ObjectType type) {
     auto buffer = findVAO(type);
 
     if (!buffer.isVaild()) {
@@ -24,7 +24,7 @@ VerticesBuffer Vertices::getVAO(VerticesType type) {
     return buffer;
 }
 
-VerticesBuffer Vertices::findVAO(VerticesType type) {
+VerticesBuffer Vertices::findVAO(ObjectType type) {
     VerticesBuffer buffer;
 
     auto it = m_vaoMap.find(type);

@@ -59,7 +59,7 @@ void Characters::loadCharacters() {
         };
         m_characters.insert(std::pair<GLchar, Character>(c, character));
     }
-    std::cout << " load characters finish !" << std::endl;
+    std::cout << "load characters finish !" << std::endl;
 }
 
 Character Characters::getCharacter(GLchar c) {

@@ -13,8 +13,8 @@ const unsigned int SCR_HEIGHT = 600;
 int main(int, char**) {
 
     auto window = make_shared<Window>(SCR_WIDTH, SCR_HEIGHT);
-    auto plane = make_shared<Plane>();
-    auto font = make_shared<Font>();
+    auto plane = make_shared<Plane>("YZQ");
+    auto font = make_shared<Font>("FPS");
 
     window->addObject(plane);
     window->addObject(font);

@@ -8,6 +8,7 @@
 #include <mutex>
 #include <map>
 
+#include "../Common.h"
 #include "VerticesInfo.h"
 
 struct VerticesBuffer {
@@ -23,13 +24,13 @@ class Vertices {
 
 public:
     static std::shared_ptr<Vertices> getInstance();
-    VerticesBuffer getVAO(VerticesType type);
+    VerticesBuffer getVAO(ObjectType type);
 
 
 private:
-    std::map<VerticesType, VerticesBuffer> m_vaoMap;
+    std::map<ObjectType, VerticesBuffer> m_vaoMap;
 
     VerticesBuffer bindPlane();
     VerticesBuffer bindFont();
-    VerticesBuffer findVAO(VerticesType type);
+    VerticesBuffer findVAO(ObjectType type);
 };

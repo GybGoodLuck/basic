@@ -2,10 +2,10 @@
 #include "../characters/Characters.h"
 #include <Config.h>
 
-Plane::Plane() {
+Plane::Plane(const std::string& name) : Object(name) {
     m_program = createProgram(verticesSource, fragmentSource);
-    m_vao = Vertices::getInstance()->getVAO(PLANE).vao;
-    m_vbo = Vertices::getInstance()->getVAO(PLANE).vbo;
+    m_vao = Vertices::getInstance()->getVAO(type()).vao;
+    m_vbo = Vertices::getInstance()->getVAO(type()).vbo;
     std::string path = "image/yzq.jpg";
     path = RES_PATH + path;
     m_texture = loadTexture(path.c_str());

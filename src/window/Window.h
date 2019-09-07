@@ -4,7 +4,7 @@
 #include <iostream>
 #include <chrono>
 
-#include "../object/Object.h"
+#include "../object/Font.h"
 
 class Window {
 
@@ -29,4 +29,6 @@ private:
     std::vector<std::shared_ptr<Object>> m_renderList;
 
     GLFWwindow* m_GLWindow;
+
+    void update(const std::shared_ptr<Object>& object);
 };

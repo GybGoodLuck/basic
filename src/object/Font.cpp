@@ -1,11 +1,11 @@
 #include "Font.h"
 
-Font::Font() {
+Font::Font(const std::string& name) : Object(name) {
     m_program = createProgram(fontVerticesSource, fontFragmentSource);
     m_projection = glm::mat4(1.0f);
     m_projection = glm::scale(m_projection, {0.01f, 0.01f, 0.01f});
-    m_vao = Vertices::getInstance()->getVAO(FONT).vao;
-    m_vbo = Vertices::getInstance()->getVAO(FONT).vbo;
+    m_vao = Vertices::getInstance()->getVAO(type()).vao;
+    m_vbo = Vertices::getInstance()->getVAO(type()).vbo;
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); //禁用字节对齐限制
 }
 
