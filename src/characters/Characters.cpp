@@ -71,7 +71,6 @@ Character Characters::getCharacter(GLchar c) {
     return Character();
 }
 
-
 std::shared_ptr<Characters> Characters::getInstance() {
     static std::shared_ptr<Characters> s_characters;
     static std::mutex s_mutex;
