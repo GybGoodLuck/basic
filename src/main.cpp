@@ -12,12 +12,13 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main(int, char**) {
 
+    auto camera =  make_shared<Camera>();
     auto window = make_shared<Window>(SCR_WIDTH, SCR_HEIGHT);
-    auto plane = make_shared<Plane>("YZQ");
-    auto font = make_shared<Font>("FPS");
+    auto plane = make_shared<Plane>("YZQ", camera);
+    auto font = make_shared<Font>("FPS", camera);
 
-    window->addObject(plane);
     window->addObject(font);
+    window->addObject(plane);
     window->renderLoop();
     
     return 0;

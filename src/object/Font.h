@@ -6,13 +6,14 @@
 class Font : public Object {
 
 public:
-    Font(const std::string& name);
+    Font(const std::string& name, const Camera::Ptr& camera);
 
     ObjectType type() override {
         return FONT;
     }
 
     void render() override;
+    void update() override;
 
     void setText(const std::string& text) {
         m_text = text;

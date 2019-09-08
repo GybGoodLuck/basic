@@ -110,8 +110,15 @@ void Window::update(const std::shared_ptr<Object>& object) {
                 }
             }
             break;
-        
+        case PLANE:
+            {
+                glm::vec3 axis = {0.0f, 1.0f, 0.0f};
+                auto rotateQua = glm::angleAxis(glm::radians(0.2f), axis) * object->getQua();
+                object->setQua(rotateQua);
+            }
         default:
             break;
     }
+
+    object->update();
 }
