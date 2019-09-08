@@ -2,6 +2,8 @@
 // Created by yuanbin on 19-8-12.
 //
 
+#include <functional>
+
 #include "GLUtils.h"
 
 GLint createProgram(const char* vShader, const char* fShader) {

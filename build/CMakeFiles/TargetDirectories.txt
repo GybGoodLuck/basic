@@ -1,7 +1,7 @@
-/home/yuanbin/opengl/workspace/basic/build/CMakeFiles/package.dir
-/home/yuanbin/opengl/workspace/basic/build/CMakeFiles/rebuild_cache.dir
-/home/yuanbin/opengl/workspace/basic/build/CMakeFiles/STB_IMAGE.dir
-/home/yuanbin/opengl/workspace/basic/build/CMakeFiles/edit_cache.dir
-/home/yuanbin/opengl/workspace/basic/build/CMakeFiles/package_source.dir
-/home/yuanbin/opengl/workspace/basic/build/CMakeFiles/GLAD.dir
-/home/yuanbin/opengl/workspace/basic/build/CMakeFiles/basic.dir
+/home/gyb/opengl/basic/build/CMakeFiles/rebuild_cache.dir
+/home/gyb/opengl/basic/build/CMakeFiles/STB_IMAGE.dir
+/home/gyb/opengl/basic/build/CMakeFiles/basic.dir
+/home/gyb/opengl/basic/build/CMakeFiles/edit_cache.dir
+/home/gyb/opengl/basic/build/CMakeFiles/package.dir
+/home/gyb/opengl/basic/build/CMakeFiles/GLAD.dir
+/home/gyb/opengl/basic/build/CMakeFiles/package_source.dir

@@ -2,6 +2,6 @@
 
 #include <string>
 
-static std::string ROOT_PATH = "/home/yuanbin/opengl/workspace/basic/";
-static std::string SRC_PATH = "/home/yuanbin/opengl/workspace/basic/src/";
-static std::string RES_PATH = "/home/yuanbin/opengl/workspace/basic/resource/";
+static std::string ROOT_PATH = "/home/gyb/opengl/basic/";
+static std::string SRC_PATH = "/home/gyb/opengl/basic/src/";
+static std::string RES_PATH = "/home/gyb/opengl/basic/resource/";

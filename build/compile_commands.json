@@ -1,61 +1,52 @@
 [
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/STB_IMAGE.dir/src/stb_image.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/stb_image.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/stb_image.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/STB_IMAGE.dir/src/stb_image.cpp.o -c /home/gyb/opengl/basic/src/stb_image.cpp",
+  "file": "/home/gyb/opengl/basic/src/stb_image.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/gcc-5   -I../includes -I../config  -g   -o CMakeFiles/GLAD.dir/src/glad.c.o   -c /home/yuanbin/opengl/workspace/basic/src/glad.c",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/glad.c"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/characters/Characters.cpp.o -c /home/gyb/opengl/basic/src/characters/Characters.cpp",
+  "file": "/home/gyb/opengl/basic/src/characters/Characters.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/characters/Characters.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/characters/Characters.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/characters/Characters.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/window/Window.cpp.o -c /home/gyb/opengl/basic/src/window/Window.cpp",
+  "file": "/home/gyb/opengl/basic/src/window/Window.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/window/Window.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/window/Window.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/window/Window.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/object/Object.cpp.o -c /home/gyb/opengl/basic/src/object/Object.cpp",
+  "file": "/home/gyb/opengl/basic/src/object/Object.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/object/Object.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/object/Object.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/object/Object.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/object/Plane.cpp.o -c /home/gyb/opengl/basic/src/object/Plane.cpp",
+  "file": "/home/gyb/opengl/basic/src/object/Plane.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/object/Plane.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/object/Plane.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/object/Plane.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/object/Font.cpp.o -c /home/gyb/opengl/basic/src/object/Font.cpp",
+  "file": "/home/gyb/opengl/basic/src/object/Font.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/object/Font.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/object/Font.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/object/Font.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/vertices/Vertices.cpp.o -c /home/gyb/opengl/basic/src/vertices/Vertices.cpp",
+  "file": "/home/gyb/opengl/basic/src/vertices/Vertices.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/vertices/Vertices.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/vertices/Vertices.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/vertices/Vertices.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/GLUtils.cpp.o -c /home/gyb/opengl/basic/src/GLUtils.cpp",
+  "file": "/home/gyb/opengl/basic/src/GLUtils.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/GLUtils.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/GLUtils.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/GLUtils.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/g++-7   -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/main.cpp.o -c /home/gyb/opengl/basic/src/main.cpp",
+  "file": "/home/gyb/opengl/basic/src/main.cpp"
 },
-
 {
-  "directory": "/home/yuanbin/opengl/workspace/basic/build",
-  "command": "/usr/bin/g++-5    -I../includes -I../config  -std=c++11 -g -Wall   -o CMakeFiles/basic.dir/src/main.cpp.o -c /home/yuanbin/opengl/workspace/basic/src/main.cpp",
-  "file": "/home/yuanbin/opengl/workspace/basic/src/main.cpp"
+  "directory": "/home/gyb/opengl/basic/build",
+  "command": "/usr/bin/gcc-7  -I/home/gyb/opengl/basic/includes -I/home/gyb/opengl/basic/config  -g   -o CMakeFiles/GLAD.dir/src/glad.c.o   -c /home/gyb/opengl/basic/src/glad.c",
+  "file": "/home/gyb/opengl/basic/src/glad.c"
 }
 ]
