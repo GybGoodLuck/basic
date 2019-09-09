@@ -21,3 +21,5 @@ GLint createProgram(const char* vShader, const char* fShader);
 GLint loadShader(GLenum shaderType, const char* pSource);
 
 GLuint loadTexture(const char* path);
+
+void checkCompileErrors(GLuint shader, std::string type);
