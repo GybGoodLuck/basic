@@ -6,7 +6,7 @@
 class Font : public Object {
 
 public:
-    Font(const std::string& name, const Camera::Ptr& camera);
+    Font(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute);
 
     ObjectType type() override {
         return FONT;
@@ -26,5 +26,5 @@ public:
 private:
     std::string m_text = "FPS ";
 
-    void renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+    void renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale);
 };
