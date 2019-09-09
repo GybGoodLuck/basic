@@ -13,7 +13,7 @@ Characters::Characters() {
     if (FT_New_Face(ft, path.c_str(), 0, &m_face))
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
-    FT_Set_Pixel_Sizes(m_face, 0, 48);
+    FT_Set_Pixel_Sizes(m_face, 0, 30);
     loadCharacters();
 
     FT_Done_Face(m_face);

@@ -46,6 +46,7 @@ Window::Window(int width, int height) : m_width(width), m_height(height) {
     // Set OpenGL options
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_MULTISAMPLE);
 }
 
 void Window::addObject(const std::shared_ptr<Object>& object) {

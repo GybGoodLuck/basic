@@ -25,9 +25,8 @@ int main(int, char**) {
     auto plane = make_shared<Plane>("YZQ", camera, planeAttribute);
     ObjectAttribute fontAttribute; 
     fontAttribute.pos = {25.0f, 25.0f, 0.0f};
-    fontAttribute.scale.x = 0.5f;
-    fontAttribute.color = {0.2f, 0.2f, 0.6f};
-    fontAttribute.alpha = 0.5f;
+    fontAttribute.scale.x = 1.0f;
+    fontAttribute.color = {0.0f, 0.0f, 0.8f};
     auto font = make_shared<Font>("FPS", camera, fontAttribute);
 
     window->addObject(font);

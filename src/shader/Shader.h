@@ -64,6 +64,8 @@ uniform vec4 color;
 void main()
 {    
     vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
+    if(sampled.a < 0.1)
+        discard;
     FragColor = color * sampled;
 }
 )";
