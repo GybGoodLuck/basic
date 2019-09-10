@@ -9,10 +9,9 @@
 #include "object/Plane.h"
 #include "object/Font.h"
 
-using namespace std;
+#include "Common.h"
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+using namespace std;
 
 int main(int, char**) {
 

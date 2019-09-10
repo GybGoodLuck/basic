@@ -21,6 +21,9 @@ void Camera::processMouseMovement(float xoffset, float yoffset) {
     float angleX = 0.2 * xoffset;
     float angleY = 0.2 * yoffset;
 
+    glm::vec3 axisX = {1.0f, 0.0f, 0.0f};
+    glm::vec3 axisY = {0.0f, 1.0f, 0.0f};
+
     auto rotate = glm::angleAxis(glm::radians(angleX), axisY);
     rotate *= glm::angleAxis(glm::radians(angleY), axisX);
     

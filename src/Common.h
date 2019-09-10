@@ -4,6 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+static const unsigned int SCR_WIDTH = 1600;
+static const unsigned int SCR_HEIGHT = 1200;
+
 enum ObjectType {
     TRIANGLE = 0,
     FONT,

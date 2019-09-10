@@ -11,7 +11,8 @@ Font::Font(const std::string& name, const Camera::Ptr& camera, const ObjectAttri
 
 void Font::update() {
     glUseProgram(m_program);
-    m_projection = glm::ortho(0.0f, static_cast<GLfloat>(800.f), 0.0f, static_cast<GLfloat>(600.f));
+    m_projection = glm::ortho(0.0f, static_cast<GLfloat>(SCR_WIDTH),
+             0.0f, static_cast<GLfloat>(SCR_HEIGHT));
     glUniform4f(color, m_attribute.color.x, m_attribute.color.y, m_attribute.color.z, m_attribute.alpha);
     glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(m_projection));
 }

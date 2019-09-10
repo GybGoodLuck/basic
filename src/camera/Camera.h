@@ -22,7 +22,7 @@ struct Projection {
 
 struct CameraInfo
 {
-    glm::vec3 pos = {0.0f, 0.3f, 0.0f};
+    glm::vec3 pos = {0.0f, 0.5f, 0.0f};
     glm::quat quat = {0.0f, 0.0f, 0.0f, 1.0f};
     glm::vec3 dir = {0.0f, 0.0f, 1.0f};
     glm::vec3 up = {0.0f, 1.0f, 0.0f};
@@ -55,7 +55,4 @@ public:
 private:
     CameraInfo m_cameraInfo;
     Projection m_projection;
-
-    glm::vec3 axisX = {1.0f, 0.0f, 0.0f};
-    glm::vec3 axisY = {0.0f, 1.0f, 0.0f};
 };
