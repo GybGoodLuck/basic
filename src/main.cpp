@@ -23,7 +23,7 @@ int main(int, char**) {
     std::string path = "image/wood.png";
     path = RES_PATH + path;
     groundAttribute.textureID = loadTexture(path.c_str());
-    groundAttribute.pos = {0.0f, 0.0f, 1.0f};
+    groundAttribute.pos = {0.0f, 0.0f, 0.0f};
     glm::vec3 axis = {1.0f, 0.0f, 0.0f};
     groundAttribute.quat = glm::angleAxis(glm::radians(90.0f), axis) * groundAttribute.quat;
     groundAttribute.scale = {5.0f, 5.0f, 5.0f};
