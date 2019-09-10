@@ -13,6 +13,7 @@ void Object::getUniformLocation() {
 void Object::updateLocation() {
     m_model = glm::mat4(1.0f);
     m_model = glm::translate(m_model, m_attribute.pos);
+    m_model = glm::scale(m_model, m_attribute.scale);
     m_model = m_model * glm::mat4_cast(m_attribute.quat);
 }
 

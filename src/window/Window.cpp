@@ -1,12 +1,5 @@
 #include "Window.h"
-
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
-{
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-}
+#include "../controller/Controller.h"
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
@@ -17,7 +10,19 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-Window::Window(int width, int height) : m_width(width), m_height(height) {
+void Window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    MousePosition position;
+    position.x = xpos;
+    position.y = ypos;
+    Controller::getInstance()->setMousePosition(position);
+}
+
+void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+    Controller::getInstance()->processMouse(button, action, mods);
+}
+
+Window::Window(int width, int height, const Camera::Ptr& camera) 
+        : m_width(width), m_height(height), m_camera(camera) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -34,6 +39,8 @@ Window::Window(int width, int height) : m_width(width), m_height(height) {
     }
     glfwMakeContextCurrent(m_GLWindow);
     glfwSetFramebufferSizeCallback(m_GLWindow, framebuffer_size_callback);
+    glfwSetCursorPosCallback(m_GLWindow, mouse_callback);
+    glfwSetMouseButtonCallback(m_GLWindow, mouse_button_callback);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -67,8 +74,13 @@ auto start = std::chrono::system_clock::now();
 void Window::renderLoop() {
 
     while(!glfwWindowShouldClose(m_GLWindow)) {
-        processInput(m_GLWindow);
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        processInput();
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
         
@@ -113,13 +125,25 @@ void Window::update(const std::shared_ptr<Object>& object) {
             break;
         case PLANE:
             {
-                glm::vec3 axis = {0.0f, 1.0f, 0.0f};
-                auto rotateQua = glm::angleAxis(glm::radians(0.2f), axis) * object->getQua();
-                object->setQua(rotateQua);
             }
         default:
             break;
     }
 
     object->update();
+}
+
+void Window::processInput()
+{
+    if(glfwGetKey(m_GLWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(m_GLWindow, true);
+
+    if (glfwGetKey(m_GLWindow, GLFW_KEY_W) == GLFW_PRESS)
+        m_camera->processKeyboard(FORWARD, deltaTime);
+    if (glfwGetKey(m_GLWindow, GLFW_KEY_S) == GLFW_PRESS)
+        m_camera->processKeyboard(BACKWARD, deltaTime);
+    if (glfwGetKey(m_GLWindow, GLFW_KEY_A) == GLFW_PRESS)
+        m_camera->processKeyboard(LEFT, deltaTime);
+    if (glfwGetKey(m_GLWindow, GLFW_KEY_D) == GLFW_PRESS)
+        m_camera->processKeyboard(RIGHT, deltaTime);
 }

@@ -4,6 +4,7 @@
 #include <Config.h>
 
 #include "window/Window.h"
+#include "controller/Controller.h"
 
 #include "object/Plane.h"
 #include "object/Font.h"
@@ -16,13 +17,26 @@ const unsigned int SCR_HEIGHT = 600;
 int main(int, char**) {
 
     auto camera =  make_shared<Camera>();
-    auto window = make_shared<Window>(SCR_WIDTH, SCR_HEIGHT);
+    auto window = make_shared<Window>(SCR_WIDTH, SCR_HEIGHT, camera);
+    Controller::getInstance()->setCamera(camera);
 
-    ObjectAttribute planeAttribute; 
-    std::string path = "image/yzq.jpg";
+    ObjectAttribute groundAttribute; 
+    std::string path = "image/wood.png";
     path = RES_PATH + path;
-    planeAttribute.textureID = loadTexture(path.c_str());
-    auto plane = make_shared<Plane>("YZQ", camera, planeAttribute);
+    groundAttribute.textureID = loadTexture(path.c_str());
+    groundAttribute.pos = {0.0f, 0.0f, 1.0f};
+    glm::vec3 axis = {1.0f, 0.0f, 0.0f};
+    groundAttribute.quat = glm::angleAxis(glm::radians(90.0f), axis) * groundAttribute.quat;
+    groundAttribute.scale = {10.f, 10.f, 10.f};
+    auto plane = make_shared<Plane>("ground", camera, groundAttribute);
+
+    ObjectAttribute planeAttribute;
+    std::string yzqPath = "image/yzq.jpg";
+    yzqPath = RES_PATH + yzqPath;
+    planeAttribute.textureID = loadTexture(yzqPath.c_str());
+    planeAttribute.pos = {0.0f, 1.0f, 3.0f};
+    auto yzqPlane = make_shared<Plane>("yzq", camera, planeAttribute);
+
     ObjectAttribute fontAttribute; 
     fontAttribute.pos = {25.0f, 25.0f, 0.0f};
     fontAttribute.scale.x = 1.0f;
@@ -31,6 +45,7 @@ int main(int, char**) {
 
     window->addObject(font);
     window->addObject(plane);
+    window->addObject(yzqPlane);
     window->renderLoop();
     
     return 0;

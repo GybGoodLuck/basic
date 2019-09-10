@@ -6,6 +6,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+enum CameraMovement {
+    FORWARD,
+    BACKWARD,
+    LEFT,
+    RIGHT
+};
+
 struct Projection {
     float near = 0.1f;
     float far = 200.f;
@@ -15,17 +22,19 @@ struct Projection {
 
 struct CameraInfo
 {
-    glm::vec3 pos = {0.0f, 0.0f, 0.0f};
+    glm::vec3 pos = {0.0f, 0.3f, 0.0f};
     glm::quat quat = {0.0f, 0.0f, 0.0f, 1.0f};
     glm::vec3 dir = {0.0f, 0.0f, 1.0f};
     glm::vec3 up = {0.0f, 1.0f, 0.0f};
 };
 
-
 class Camera
 {
 public:
     using Ptr = std::shared_ptr<Camera>;
+
+    void processKeyboard(CameraMovement direction, float deltaTime);
+    void processMouseMovement(float xoffset, float yoffset);
 
     void setCameraInfo(const CameraInfo& cameraInfo) {
         m_cameraInfo = cameraInfo;
@@ -47,4 +56,6 @@ private:
     CameraInfo m_cameraInfo;
     Projection m_projection;
 
+    glm::vec3 axisX = {1.0f, 0.0f, 0.0f};
+    glm::vec3 axisY = {0.0f, 1.0f, 0.0f};
 };

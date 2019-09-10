@@ -36,6 +36,7 @@ set(EXECUTABLE_SOURCE
     src/characters/Characters.cpp
     src/window/Window.cpp
     src/camera/Camera.cpp
+    src/controller/Controller.cpp
     src/object/Object.cpp
     src/object/Plane.cpp
     src/object/Font.cpp
