@@ -26,20 +26,20 @@ int main(int, char**) {
     groundAttribute.pos = {0.0f, 0.0f, 0.0f};
     glm::vec3 axis = {1.0f, 0.0f, 0.0f};
     groundAttribute.quat = glm::angleAxis(glm::radians(90.0f), axis) * groundAttribute.quat;
-    groundAttribute.scale = {5.0f, 5.0f, 5.0f};
+    groundAttribute.scale = {8.0f, 8.0f, 8.0f};
     auto plane = make_shared<Plane>("ground", camera, groundAttribute);
 
     ObjectAttribute planeAttribute;
     std::string yzqPath = "image/yzq.jpg";
     yzqPath = RES_PATH + yzqPath;
     planeAttribute.textureID = loadTexture(yzqPath.c_str());
-    planeAttribute.pos = {0.0f, 1.0f, 3.0f};
+    planeAttribute.pos = {0.0f, 1.0f, 2.0f};
     auto yzqPlane = make_shared<Plane>("yzq", camera, planeAttribute);
 
     ObjectAttribute fontAttribute; 
-    fontAttribute.pos = {25.0f, 25.0f, 0.0f};
+    fontAttribute.pos = {25.0f, 1150.0f, 0.0f};
     fontAttribute.scale.x = 1.0f;
-    fontAttribute.color = {0.0f, 0.0f, 0.8f};
+    fontAttribute.color = {0.6f, 0.6f, 0.2f};
     auto font = make_shared<Font>("FPS", camera, fontAttribute);
 
     window->addObject(font);

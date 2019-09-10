@@ -5,7 +5,7 @@ void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
     Front.y = 0.0f;
     glm::vec3 Right = glm::normalize(glm::cross(Front, m_cameraInfo.up));
 
-    float velocity = 0.2 * deltaTime;
+    float velocity = m_speed * deltaTime;
     if (direction == FORWARD)
         m_cameraInfo.pos += Front * velocity;
     if (direction == BACKWARD)
@@ -18,8 +18,8 @@ void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
 
 void Camera::processMouseMovement(float xoffset, float yoffset) {
 
-    float angleX = 0.2 * xoffset;
-    float angleY = 0.2 * yoffset;
+    float angleX = m_rotateSpeed * xoffset;
+    float angleY = m_rotateSpeed * yoffset;
 
     glm::vec3 axisX = {m_cameraInfo.dir.z, 0.0f, 0.0f};
     glm::vec3 axisY = {0.0f, 1.0f, 0.0f};
