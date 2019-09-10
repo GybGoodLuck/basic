@@ -27,7 +27,7 @@ int main(int, char**) {
     groundAttribute.pos = {0.0f, 0.0f, 1.0f};
     glm::vec3 axis = {1.0f, 0.0f, 0.0f};
     groundAttribute.quat = glm::angleAxis(glm::radians(90.0f), axis) * groundAttribute.quat;
-    groundAttribute.scale = {10.f, 10.f, 10.f};
+    groundAttribute.scale = {5.0f, 5.0f, 5.0f};
     auto plane = make_shared<Plane>("ground", camera, groundAttribute);
 
     ObjectAttribute planeAttribute;
