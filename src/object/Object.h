@@ -19,6 +19,10 @@ public:
 
     virtual void update();
 
+    std::string getName() const {
+        return m_name;
+    };
+
     void setPos(const glm::vec3& pos) {
         m_attribute.pos = pos;
     };

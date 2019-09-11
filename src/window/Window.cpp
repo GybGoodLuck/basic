@@ -119,13 +119,23 @@ void Window::update(const std::shared_ptr<Object>& object) {
                 fps = fps + std::to_string(m_fps);
                 auto font = std::static_pointer_cast<Font>(object);
                 
-                if (font->getText().compare("FPS")) {
+                if (font->getName() == "FPS") {
                     font->setText(fps);
                 }
             }
             break;
         case PLANE:
             {
+                break;
+            }
+        case CUBE:
+            {
+                if (object->getName() == "cube") {
+                    glm::vec3 axis = {1.0f, 0.0f, 1.0f};
+                    auto rotate = glm::angleAxis(glm::radians(1.0f), axis);
+                    object->setQua(rotate * object->getQua());
+                }
+                break;
             }
         default:
             break;

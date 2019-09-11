@@ -17,8 +17,8 @@ using namespace std;
 int main(int, char**) {
 
     auto camera =  make_shared<Camera>();
-    glm::vec3 pos = {2.0, 0.0, -2.0};
-    glm::vec3 color = {1.0f, 0.0f, 0.0f};
+    glm::vec3 pos = {-1.0, 0.0, -2.0};
+    glm::vec3 color = {1.0f, 1.0f, 1.0f};
     auto light = std::make_shared<Light>(pos, color);
     auto window = make_shared<Window>(SCR_WIDTH, SCR_HEIGHT, camera);
     Controller::getInstance()->setCamera(camera);
@@ -39,7 +39,7 @@ int main(int, char**) {
     planeAttribute.pos = {0.0f, 1.0f, 2.0f};
     glm::vec3 axis = {1.0f, 0.0f, 0.0f};
     planeAttribute.quat = glm::angleAxis(glm::radians(270.0f), axis) * planeAttribute.quat;
-    auto yzqPlane = make_shared<Plane>("yzq", camera, light, planeAttribute);
+    auto yzqPlane = make_shared<Plane>("yzq", camera, planeAttribute);
     yzqPlane->init();
 
     ObjectAttribute fontAttribute; 
@@ -63,14 +63,14 @@ int main(int, char**) {
     lightAttribute.pos = light->getPos();
     lightAttribute.color = light->getColor();
     lightAttribute.scale = {0.15f, 0.2f, 0.15f};
-    auto lightCube = make_shared<Cube>("cube", camera, lightAttribute);
+    auto lightCube = make_shared<Cube>("light", camera, lightAttribute);
     lightCube->init();
 
-    window->addObject(font);
     window->addObject(plane);
     window->addObject(yzqPlane);
     window->addObject(cube);
     window->addObject(lightCube);
+    window->addObject(font);
     window->renderLoop();
     
     return 0;

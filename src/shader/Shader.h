@@ -91,16 +91,16 @@ void main()
     }
 
     if (useLight) {
-        float ambientStrength = 0.6;
+        float ambientStrength = 0.1;
         vec3 ambient = ambientStrength * vec3(1.0f, 1.0f, 1.0f);
 
         // diffuse
         vec3 norm = normalize(normal);
         vec3 lightDir = normalize(lightPos - pos.xyz);
-        float diff = max(dot(norm, lightDir), 0.0);
+        float diff = max(dot(lightDir, norm), 0.0);
         vec3 diffuse = diff * lightColor;
 
-        float specularStrength = 0.5;
+        float specularStrength = 0.3;
         vec3 viewDir = normalize(cameraPos - pos.xyz);
         float spec = 0.0;
 
@@ -114,9 +114,9 @@ void main()
 
         vec3 specular = specularStrength * spec * lightColor;
         // vec3 specular = vec3(2.0) * spec;
-        vec3 result = (ambient + diffuse + specular) * mcolor.rgb;
+        vec3 result = (ambient + diffuse * 3.0 + specular) * mcolor.rgb;
 
-        FragColor = vec4(result, 1.0);
+        FragColor = vec4(result, color.a);
     } else {
         FragColor = mcolor;
     }
