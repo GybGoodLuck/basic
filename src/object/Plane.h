@@ -5,12 +5,13 @@
 class Plane : public Object {
 
 public:
-    Plane(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute);
+    using Object::Object;
+    using Object::update;
 
     ObjectType type() override {
         return PLANE;
     }
 
+    void init() override;
     void render() override;
-    void update() override;
 };

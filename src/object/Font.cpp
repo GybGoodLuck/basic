@@ -3,10 +3,13 @@
 Font::Font(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute)
         : Object(name, camera, attribute) {
     m_program = createProgram(fontVerticesSource, fontFragmentSource);
-    m_vao = Vertices::getInstance()->getVAO(type()).vao;
-    m_vbo = Vertices::getInstance()->getVAO(type()).vbo;
     getUniformLocation();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); //禁用字节对齐限制
+}
+
+void Font::init() {
+    m_vao = Vertices::getInstance()->getVAO(type()).vao;
+    m_vbo = Vertices::getInstance()->getVAO(type()).vbo;
 }
 
 void Font::update() {

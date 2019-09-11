@@ -12,6 +12,7 @@ public:
         return FONT;
     }
 
+    void init() override;
     void render() override;
     void update() override;
 

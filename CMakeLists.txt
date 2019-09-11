@@ -32,15 +32,15 @@ set(LIBS ${LIBS} GLAD)
 
 set(NAME basic)
 
+file(GLOB OBJ_LIST "*.cpp" "src/object/*.cpp")
+
 set(EXECUTABLE_SOURCE
+    ${OBJ_LIST}
     src/characters/Characters.cpp
     src/window/Window.cpp
     src/camera/Camera.cpp
+    src/light/Light.cpp
     src/controller/Controller.cpp
-    src/object/Object.cpp
-    src/object/Plane.cpp
-    src/object/Font.cpp
-    src/object/Cube.cpp
     src/vertices/Vertices.cpp
     src/GLUtils.cpp
     src/main.cpp

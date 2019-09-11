@@ -5,12 +5,13 @@
 class Cube : public Object {
 
 public:
-    Cube(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute);
+    using Object::Object;
+    using Object::update;
 
     ObjectType type() override {
         return CUBE;
     }
 
+    void init() override;
     void render() override;
-    void update() override;
 };

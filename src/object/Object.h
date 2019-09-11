@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../camera/Camera.h"
+#include "../light/Light.h"
 #include "../vertices/Vertices.h"
 #include "../shader/Shader.h"
 #include "../GLUtils.h"
@@ -8,12 +9,15 @@
 class Object {
 
 public:
+    Object(const std::string& name, const Camera::Ptr& camera, const Light::Ptr& light, const ObjectAttribute& attribute);
     Object(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute);
     virtual ~Object() {};
 
     virtual ObjectType type() = 0;
     virtual void render() = 0;
-    virtual void update() = 0;
+    virtual void init() = 0;
+
+    virtual void update();
 
     void setPos(const glm::vec3& pos) {
         m_attribute.pos = pos;
@@ -60,6 +64,10 @@ protected:
 
     Camera::Ptr m_camera;
     ObjectAttribute m_attribute;
+    Light::Ptr m_light;
+
+    bool m_useLight = false;
+    bool m_blinn = true;
 
     VAO m_vao;
     VBO m_vbo;
@@ -75,7 +83,15 @@ protected:
     GLint model;
     GLint color;
 
+    GLint use_light;
+    GLint light_pos;
+    GLint light_color;
+    GLint blinn;
+
+    GLint camera_pos;
+
     void getUniformLocation();
     void updateLocation();
     void updateCamera();
+    void updateLight();
 };
