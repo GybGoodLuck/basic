@@ -17,7 +17,7 @@ using namespace std;
 int main(int, char**) {
 
     auto camera =  make_shared<Camera>();
-    glm::vec3 pos = {-2.0, 0.0, 1.0};
+    glm::vec3 pos = {2.0, 0.0, -2.0};
     glm::vec3 color = {1.0f, 0.0f, 0.0f};
     auto light = std::make_shared<Light>(pos, color);
     auto window = make_shared<Window>(SCR_WIDTH, SCR_HEIGHT, camera);
