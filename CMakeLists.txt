@@ -40,6 +40,7 @@ set(EXECUTABLE_SOURCE
     src/object/Object.cpp
     src/object/Plane.cpp
     src/object/Font.cpp
+    src/object/Cube.cpp
     src/vertices/Vertices.cpp
     src/GLUtils.cpp
     src/main.cpp

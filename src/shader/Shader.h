@@ -29,7 +29,7 @@ uniform sampler2D texture1;
 uniform vec4 color;
 
 void main() {
-    FragColor = texture(texture1, TexCoord) *  color;
+    FragColor = texture(texture1, TexCoord) * color;
 }
 )";
 
@@ -67,5 +67,46 @@ void main()
     if(sampled.a < 0.1)
         discard;
     FragColor = color * sampled;
+}
+)";
+
+static const char cubeVerticesSource[] = R"(
+#version 330 core
+
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoords;
+layout (location = 2) in vec3 aNormal;
+
+out vec2 TexCoords;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main() {
+    TexCoords = aTexCoords;
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
+}
+)";
+
+static const char cubeFragmentSource[] = R"(
+#version 330 core
+
+out vec4 FragColor;
+
+in vec2 TexCoords;
+
+uniform sampler2D texture1;
+uniform vec4 color;
+
+void main()
+{   
+    vec4 tex = texture(texture1, TexCoords);
+
+    if (tex.x == 0.0 && tex.y == 0 && tex.z == 0) {
+        FragColor = color;
+    } else {
+        FragColor = tex * color;
+    }
 }
 )";

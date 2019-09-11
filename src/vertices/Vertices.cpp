@@ -16,6 +16,11 @@ VerticesBuffer Vertices::getVAO(ObjectType type) {
                 std::cout << "bindPlane vao : " << buffer.vao << " vbo : " << buffer.vbo << std::endl;
                 m_vaoMap.insert({PLANE, buffer});
                 break;
+            case CUBE:
+                buffer = bindCube();
+                std::cout << "bindCube vao : " << buffer.vao << " vbo : " << buffer.vbo << std::endl;
+                m_vaoMap.insert({CUBE, buffer});
+                break;
             default:
                 break;
         }
@@ -53,6 +58,8 @@ VerticesBuffer Vertices::bindPlane() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
     return buffer;
 }
 
@@ -66,6 +73,31 @@ VerticesBuffer Vertices::bindFont() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    return buffer;
+}
+
+VerticesBuffer Vertices::bindCube() {
+    VerticesBuffer buffer;
+
+    glGenVertexArrays(1, &buffer.vao);
+    glGenBuffers(1, &buffer.vbo);
+
+    glBindVertexArray(buffer.vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, buffer.vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     return buffer;

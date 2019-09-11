@@ -1,14 +1,14 @@
-#include "Plane.h"
+#include "Cube.h"
 
-Plane::Plane(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute)
+Cube::Cube(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute)
          : Object(name, camera, attribute) {
-    m_program = createProgram(verticesSource, fragmentSource);
+    m_program = createProgram(cubeVerticesSource, cubeFragmentSource);
     m_vao = Vertices::getInstance()->getVAO(type()).vao;
     m_vbo = Vertices::getInstance()->getVAO(type()).vbo;
     getUniformLocation();
 }
 
-void Plane::update() {
+void Cube::update() {
     glUseProgram(m_program);
     updateLocation();
     updateCamera();
@@ -18,10 +18,10 @@ void Plane::update() {
     glUniform4f(color, m_attribute.color.x, m_attribute.color.y, m_attribute.color.z, m_attribute.alpha);
 }
 
-void Plane::render() {
+void Cube::render() {
     glBindTexture(GL_TEXTURE_2D, m_attribute.textureID);
     glBindVertexArray(m_vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }

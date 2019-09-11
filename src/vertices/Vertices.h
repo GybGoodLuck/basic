@@ -32,5 +32,7 @@ private:
 
     VerticesBuffer bindPlane();
     VerticesBuffer bindFont();
+    VerticesBuffer bindCube();
+
     VerticesBuffer findVAO(ObjectType type);
 };
