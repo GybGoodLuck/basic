@@ -21,16 +21,23 @@ int main(int, char**) {
     glm::vec3 pos = {-3.0, 0.0, -2.0};
     glm::vec3 color = {0.0f, 0.0f, 1.0f};
     auto light = std::make_shared<Light>(pos, color);
+    LightManager::getInstance()->addLight(1, light);
+
+    pos = {4.0, -0.2, -2.0};
+    color = {1.0f, 0.0f, 0.0f};
+    auto light2 = std::make_shared<Light>(pos, color);
+    LightManager::getInstance()->addLight(2, light2);
+
     auto window = make_shared<Window>(SCR_WIDTH, SCR_HEIGHT, camera);
     Controller::getInstance()->setCamera(camera);
 
-    ObjectAttribute groundAttribute; 
+    ObjectAttribute groundAttribute;
     std::string path = "image/car.jpg";
     path = RES_PATH + path;
     groundAttribute.textureID = loadTexture(path.c_str());
     groundAttribute.pos = {0.0f, 0.0f, 0.0f};
     groundAttribute.scale = {14.2f, 1.0f, 8.0f};
-    auto plane = make_shared<Plane>("ground", camera, light, groundAttribute);
+    auto plane = make_shared<Plane>("ground", camera, groundAttribute, true);
     plane->init();
 
     ObjectAttribute planeAttribute;
@@ -40,7 +47,7 @@ int main(int, char**) {
     planeAttribute.pos = {0.0f, 1.0f, 2.0f};
     glm::vec3 axis = {1.0f, 0.0f, 0.0f};
     planeAttribute.quat = glm::angleAxis(glm::radians(270.0f), axis) * planeAttribute.quat;
-    auto yzqPlane = make_shared<Plane>("yzq", camera, light, planeAttribute);
+    auto yzqPlane = make_shared<Plane>("yzq", camera, planeAttribute, true);
     yzqPlane->init();
 
     ObjectAttribute fontAttribute; 
@@ -57,7 +64,7 @@ int main(int, char**) {
     std::string gamePath = "image/container.jpg";
     gamePath = RES_PATH + gamePath;
     cubeAttribute.textureID = loadTexture(gamePath.c_str());
-    auto cube = make_shared<Cube>("cube", camera, light, cubeAttribute);
+    auto cube = make_shared<Cube>("cube", camera, cubeAttribute, true);
     cube->init();
 
     ObjectAttribute sphereAttribute;
@@ -67,21 +74,28 @@ int main(int, char**) {
     std::string spherePath = "image/grass.jpeg";
     spherePath = RES_PATH + spherePath;
     sphereAttribute.textureID = loadTexture(spherePath.c_str());
-    auto sphere = make_shared<Sphere>("sphere", camera, light, sphereAttribute);
+    auto sphere = make_shared<Sphere>("sphere", camera, sphereAttribute, true);
     sphere->init();
 
     ObjectAttribute lightAttribute;
     lightAttribute.pos = light->getPos();
     lightAttribute.color = light->getColor();
     lightAttribute.scale = {0.15f, 0.2f, 0.15f};
-    auto lightCube = make_shared<Cube>("light", camera, lightAttribute);
+    auto lightCube = make_shared<Cube>("light1", camera, lightAttribute);
     lightCube->init();
+
+    lightAttribute.pos = light2->getPos();
+    lightAttribute.color = light2->getColor();
+    lightAttribute.scale = {0.15f, 0.2f, 0.15f};
+    auto lightCube2 = make_shared<Cube>("light2", camera, lightAttribute);
+    lightCube2->init();
 
     window->addObject(plane);
     window->addObject(yzqPlane);
     window->addObject(cube);
     window->addObject(sphere);
     window->addObject(lightCube);
+    window->addObject(lightCube2);
     window->addObject(font);
     window->renderLoop();
     

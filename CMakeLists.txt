@@ -39,7 +39,7 @@ set(EXECUTABLE_SOURCE
     src/characters/Characters.cpp
     src/window/Window.cpp
     src/camera/Camera.cpp
-    src/light/Light.cpp
+    src/light/LightManager.cpp
     src/controller/Controller.cpp
     src/vertices/Vertices.cpp
     src/GLUtils.cpp

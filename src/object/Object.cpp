@@ -1,14 +1,8 @@
 #include "Object.h"
 #include "../Common.h"
 
-Object::Object(const std::string& name, const Camera::Ptr& camera, const Light::Ptr& light, const ObjectAttribute& attribute) 
-        : m_name(name), m_camera(camera), m_attribute(attribute), m_light(light), m_useLight(true) {    
-    m_program = createProgram(verticesSource, fragmentSource);
-    getUniformLocation();
-}
-
-Object::Object(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute) 
-        : m_name(name), m_camera(camera), m_attribute(attribute), m_useLight(false) {
+Object::Object(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute, bool useLight) 
+        : m_name(name), m_camera(camera), m_attribute(attribute), m_useLight(useLight) {    
     m_program = createProgram(verticesSource, fragmentSource);
     getUniformLocation();
 }
@@ -21,6 +15,7 @@ void Object::getUniformLocation() {
     use_light = glGetUniformLocation(m_program, "useLight");
 
     if (m_useLight) {
+        light_size = glGetUniformLocation(m_program, "lightSize");
         light_pos = glGetUniformLocation(m_program, "lightPos");
         light_color = glGetUniformLocation(m_program, "lightColor");
         blinn = glGetUniformLocation(m_program, "blinn");
@@ -65,11 +60,10 @@ void Object::updateCamera() {
 }
 
 void Object::updateLight() {
-    auto lightPos = m_light->getPos();
-    auto lightColor = m_light->getColor();
     auto cameraPos = m_camera->getCameraInfo().pos;
-    glUniform3f(light_pos, lightPos.x, lightPos.y, lightPos.z);
-    glUniform3f(light_color, lightColor.x, lightColor.y, lightColor.z);
+    glUniform1i(light_size, LightManager::getInstance()->getSize());
+    glUniform3fv(light_pos, LightManager::getInstance()->getSize(), (GLfloat*) LightManager::getInstance()->getPositions());
+    glUniform3fv(light_color, LightManager::getInstance()->getSize(), (GLfloat*) LightManager::getInstance()->getColors());
     glUniform1i(blinn, m_blinn);
     glUniform3f(camera_pos, cameraPos.x, cameraPos.y, cameraPos.z);
 }

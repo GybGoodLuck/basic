@@ -72,13 +72,50 @@ in vec3 normal;
 uniform sampler2D texture1;
 uniform vec4 color;
 
-uniform vec3 lightPos;
-uniform vec3 lightColor;
+uniform vec3 lightPos[10];
+uniform vec3 lightColor[10];
 uniform vec3 cameraPos;
 
 uniform bool gamma;
 uniform bool blinn;
 uniform bool useLight;
+uniform int lightSize;
+
+vec3 BlinnPhong(vec3 normal, vec3 pos, vec3 lightPos, vec3 lightColor, bool blinn)
+{
+    float ambientStrength = 0.2;
+    vec3 ambient = ambientStrength * vec3(1.0f, 1.0f, 1.0f);
+
+    // diffuse
+    vec3 norm = normalize(normal);
+    vec3 lightDir = normalize(lightPos - pos.xyz);
+    float diff = max(dot(lightDir, norm), 0.0);
+    vec3 diffuse = diff * lightColor;
+
+    float specularStrength = 1.0;
+    vec3 viewDir = normalize(cameraPos - pos.xyz);
+    float spec = 0.0;
+
+    if (blinn) {
+        vec3 halfwayDir = normalize(lightDir + viewDir);
+        spec = pow(max(dot(normal, halfwayDir), 0.0), 4.0);
+    } else {
+        vec3 reflectDir = reflect(-lightDir, norm);
+        spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    }
+
+    vec3 specular = specularStrength * spec * lightColor;
+
+    // simple attenuation
+    float max_distance = 1.5;
+    float distance = length(lightPos - pos.xyz);
+    float attenuation = 1.0 / (gamma ? distance * distance : distance);
+
+    diffuse *= attenuation;
+    specular *= attenuation;
+
+    return ambient + diffuse + specular;
+}
 
 void main()
 {   
@@ -92,39 +129,12 @@ void main()
     }
 
     if (useLight) {
-        float ambientStrength = 0.2;
-        vec3 ambient = ambientStrength * vec3(1.0f, 1.0f, 1.0f);
+        vec3 lighting = vec3(0.0);
 
-        // diffuse
-        vec3 norm = normalize(normal);
-        vec3 lightDir = normalize(lightPos - pos.xyz);
-        float diff = max(dot(lightDir, norm), 0.0);
-        vec3 diffuse = diff * lightColor;
-
-        float specularStrength = 1.0;
-        vec3 viewDir = normalize(cameraPos - pos.xyz);
-        float spec = 0.0;
-
-        if (blinn) {
-            vec3 halfwayDir = normalize(lightDir + viewDir);
-            spec = pow(max(dot(normal, halfwayDir), 0.0), 4.0);
-        } else {
-            vec3 reflectDir = reflect(-lightDir, norm);
-            spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-        }
-
-        vec3 specular = specularStrength * spec * lightColor;
-
-        // simple attenuation
-        float max_distance = 1.5;
-        float distance = length(lightPos - pos.xyz);
-        float attenuation = 1.0 / (gamma ? distance * distance : distance);
-
-        diffuse *= attenuation;
-        specular *= attenuation;
-
+        for(int i = 0; i < lightSize; ++i)
+            lighting += BlinnPhong(normal, pos.xyz, lightPos[i], lightColor[i], blinn);
         // vec3 specular = vec3(2.0) * spec;
-        vec3 result = (ambient + diffuse + specular) * mcolor.rgb;
+        vec3 result = lighting * mcolor.rgb;
 
         if (gamma)
             result = pow(result, vec3(1.0/2.2));

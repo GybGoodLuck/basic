@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../camera/Camera.h"
-#include "../light/Light.h"
+#include "../light/LightManager.h"
 #include "../vertices/Vertices.h"
 #include "../shader/Shader.h"
 #include "../GLUtils.h"
@@ -9,8 +9,7 @@
 class Object {
 
 public:
-    Object(const std::string& name, const Camera::Ptr& camera, const Light::Ptr& light, const ObjectAttribute& attribute);
-    Object(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute);
+    Object(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute, bool useLight = false);
     virtual ~Object() {};
 
     virtual ObjectType type() = 0;
@@ -68,7 +67,6 @@ protected:
 
     Camera::Ptr m_camera;
     ObjectAttribute m_attribute;
-    Light::Ptr m_light;
 
     bool m_useLight = false;
     bool m_blinn = true;
@@ -89,6 +87,7 @@ protected:
     GLint color;
 
     GLint use_light;
+    GLint light_size;
     GLint light_pos;
     GLint light_color;
     GLint blinn;
