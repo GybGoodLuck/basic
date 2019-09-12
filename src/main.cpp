@@ -50,6 +50,16 @@ int main(int, char**) {
     auto yzqPlane = make_shared<Plane>("yzq", camera, planeAttribute, true);
     yzqPlane->init();
 
+    ObjectAttribute windowAttribute;
+    std::string windowPath = "image/window.png";
+    windowPath = RES_PATH + windowPath;
+    windowAttribute.textureID = loadTexture(windowPath.c_str());
+    windowAttribute.pos = {-2.5f, -0.1f, -2.0f};
+    windowAttribute.quat = glm::angleAxis(glm::radians(270.0f), axis) * windowAttribute.quat;
+    windowAttribute.scale = {0.3f, 0.4f, 0.3f};
+    auto windowPlane = make_shared<Plane>("window", camera, windowAttribute, true);
+    windowPlane->init();
+
     ObjectAttribute fontAttribute; 
     fontAttribute.pos = {25.0f, 1150.0f, 0.0f};
     fontAttribute.scale.x = 1.0f;
@@ -81,7 +91,7 @@ int main(int, char**) {
     lightAttribute.pos = light->getPos();
     lightAttribute.color = light->getColor();
     lightAttribute.scale = {0.15f, 0.2f, 0.15f};
-    auto lightCube = make_shared<Cube>("light1", camera, lightAttribute);
+    auto lightCube = make_shared<Sphere>("light1", camera, lightAttribute);
     lightCube->init();
 
     lightAttribute.pos = light2->getPos();
@@ -96,6 +106,7 @@ int main(int, char**) {
     window->addObject(sphere);
     window->addObject(lightCube);
     window->addObject(lightCube2);
+    window->addObject(windowPlane);
     window->addObject(font);
     window->renderLoop();
     

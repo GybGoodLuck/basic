@@ -139,7 +139,7 @@ void main()
         if (gamma)
             result = pow(result, vec3(1.0/2.2));
 
-        FragColor = vec4(result, color.a);
+        FragColor = vec4(result, mcolor.a);
     } else {
         FragColor = mcolor;
     }
