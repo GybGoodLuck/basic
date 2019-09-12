@@ -76,6 +76,7 @@ uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 cameraPos;
 
+uniform bool gamma;
 uniform bool blinn;
 uniform bool useLight;
 
@@ -91,7 +92,7 @@ void main()
     }
 
     if (useLight) {
-        float ambientStrength = 0.1;
+        float ambientStrength = 0.2;
         vec3 ambient = ambientStrength * vec3(1.0f, 1.0f, 1.0f);
 
         // diffuse
@@ -100,21 +101,33 @@ void main()
         float diff = max(dot(lightDir, norm), 0.0);
         vec3 diffuse = diff * lightColor;
 
-        float specularStrength = 0.3;
+        float specularStrength = 1.0;
         vec3 viewDir = normalize(cameraPos - pos.xyz);
         float spec = 0.0;
 
         if (blinn) {
             vec3 halfwayDir = normalize(lightDir + viewDir);
-            spec = pow(max(dot(normal, halfwayDir), 0.0), 1.0);
+            spec = pow(max(dot(normal, halfwayDir), 0.0), 4.0);
         } else {
             vec3 reflectDir = reflect(-lightDir, norm);
             spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
         }
 
         vec3 specular = specularStrength * spec * lightColor;
+
+        // simple attenuation
+        float max_distance = 1.5;
+        float distance = length(lightPos - pos.xyz);
+        float attenuation = 1.0 / (gamma ? distance * distance : distance);
+
+        diffuse *= attenuation;
+        specular *= attenuation;
+
         // vec3 specular = vec3(2.0) * spec;
-        vec3 result = (ambient + diffuse * 3.0 + specular) * mcolor.rgb;
+        vec3 result = (ambient + diffuse + specular) * mcolor.rgb;
+
+        if (gamma)
+            result = pow(result, vec3(1.0/2.2));
 
         FragColor = vec4(result, color.a);
     } else {

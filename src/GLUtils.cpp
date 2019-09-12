@@ -4,6 +4,7 @@
 
 #include <functional>
 
+#include "Common.h"
 #include "GLUtils.h"
 
 GLint createProgram(const char* vShader, const char* fShader) {
@@ -65,8 +66,27 @@ GLuint loadTexture(const char* path) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+    GLenum internalFormat;
+    GLenum dataFormat;
+
+    switch (n) {
+        case 1:
+            internalFormat = dataFormat = GL_RED;
+            break;
+        case 3:
+            internalFormat = GammaCorrection ? GL_SRGB : GL_RGB;
+            dataFormat = GL_RGB;
+            break;
+        case 4:
+            internalFormat = GammaCorrection ? GL_SRGB_ALPHA : GL_RGBA;
+            dataFormat = GL_RGBA;
+            break;
+        default:
+            break;
+    }
+
     //生成纹理
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data.get());
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, w, h, 0, dataFormat, GL_UNSIGNED_BYTE, data.get());
     glGenerateMipmap(GL_TEXTURE_2D);
     std::cout << "loadTexture texture : " << texture << std::endl;
 

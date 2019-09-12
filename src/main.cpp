@@ -9,6 +9,7 @@
 #include "object/Plane.h"
 #include "object/Font.h"
 #include "object/Cube.h"
+#include "object/Sphere.h"
 
 #include "Common.h"
 
@@ -17,8 +18,8 @@ using namespace std;
 int main(int, char**) {
 
     auto camera =  make_shared<Camera>();
-    glm::vec3 pos = {-1.0, 0.0, -2.0};
-    glm::vec3 color = {1.0f, 1.0f, 1.0f};
+    glm::vec3 pos = {-3.0, 0.0, -2.0};
+    glm::vec3 color = {0.0f, 0.0f, 1.0f};
     auto light = std::make_shared<Light>(pos, color);
     auto window = make_shared<Window>(SCR_WIDTH, SCR_HEIGHT, camera);
     Controller::getInstance()->setCamera(camera);
@@ -39,7 +40,7 @@ int main(int, char**) {
     planeAttribute.pos = {0.0f, 1.0f, 2.0f};
     glm::vec3 axis = {1.0f, 0.0f, 0.0f};
     planeAttribute.quat = glm::angleAxis(glm::radians(270.0f), axis) * planeAttribute.quat;
-    auto yzqPlane = make_shared<Plane>("yzq", camera, planeAttribute);
+    auto yzqPlane = make_shared<Plane>("yzq", camera, light, planeAttribute);
     yzqPlane->init();
 
     ObjectAttribute fontAttribute; 
@@ -59,6 +60,16 @@ int main(int, char**) {
     auto cube = make_shared<Cube>("cube", camera, light, cubeAttribute);
     cube->init();
 
+    ObjectAttribute sphereAttribute;
+    sphereAttribute.pos = {3.0f, 0.2f, -1.0f};
+    sphereAttribute.color = {1.0f, 1.0f, 1.0f};
+    sphereAttribute.scale = {0.3f, 0.4f, 0.3f};
+    std::string spherePath = "image/grass.jpeg";
+    spherePath = RES_PATH + spherePath;
+    sphereAttribute.textureID = loadTexture(spherePath.c_str());
+    auto sphere = make_shared<Sphere>("sphere", camera, light, sphereAttribute);
+    sphere->init();
+
     ObjectAttribute lightAttribute;
     lightAttribute.pos = light->getPos();
     lightAttribute.color = light->getColor();
@@ -69,6 +80,7 @@ int main(int, char**) {
     window->addObject(plane);
     window->addObject(yzqPlane);
     window->addObject(cube);
+    window->addObject(sphere);
     window->addObject(lightCube);
     window->addObject(font);
     window->renderLoop();

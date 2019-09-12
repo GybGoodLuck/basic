@@ -75,6 +75,7 @@ protected:
 
     VAO m_vao;
     VBO m_vbo;
+    int m_indexCount;
 
     GLuint m_program;
 
@@ -91,6 +92,7 @@ protected:
     GLint light_pos;
     GLint light_color;
     GLint blinn;
+    GLint gamma;
 
     GLint camera_pos;
 

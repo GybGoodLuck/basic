@@ -8,8 +8,9 @@ Font::Font(const std::string& name, const Camera::Ptr& camera, const ObjectAttri
 }
 
 void Font::init() {
-    m_vao = Vertices::getInstance()->getVAO(type()).vao;
-    m_vbo = Vertices::getInstance()->getVAO(type()).vbo;
+    m_vao = Vertices::getInstance()->getVerticesBuffer(type()).vao;
+    m_vbo = Vertices::getInstance()->getVerticesBuffer(type()).vbo;
+    m_indexCount = Vertices::getInstance()->getVerticesBuffer(type()).indexCount;
 }
 
 void Font::update() {
@@ -58,7 +59,7 @@ void Font::renderText(std::string text, GLfloat x, GLfloat y, GLfloat scale)
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         // Render quad
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawArrays(GL_TRIANGLES, 0, m_indexCount);
         // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         x += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
     }

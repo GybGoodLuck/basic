@@ -7,11 +7,14 @@
 static const unsigned int SCR_WIDTH = 1600;
 static const unsigned int SCR_HEIGHT = 1200;
 
+static const bool GammaCorrection = true;
+
 enum ObjectType {
     TRIANGLE = 0,
     FONT,
     PLANE,
     CUBE,
+    SPHERE
 };
 
 struct ObjectAttribute {
@@ -23,5 +26,5 @@ struct ObjectAttribute {
 
     float alpha = 1.0f;
 
-    GLuint textureID;
+    int textureID;
 };

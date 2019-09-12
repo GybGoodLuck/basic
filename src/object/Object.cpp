@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "../Common.h"
 
 Object::Object(const std::string& name, const Camera::Ptr& camera, const Light::Ptr& light, const ObjectAttribute& attribute) 
         : m_name(name), m_camera(camera), m_attribute(attribute), m_light(light), m_useLight(true) {    
@@ -23,6 +24,7 @@ void Object::getUniformLocation() {
         light_pos = glGetUniformLocation(m_program, "lightPos");
         light_color = glGetUniformLocation(m_program, "lightColor");
         blinn = glGetUniformLocation(m_program, "blinn");
+        gamma = glGetUniformLocation(m_program, "gamma");
         camera_pos = glGetUniformLocation(m_program, "cameraPos");
     }
 }
@@ -35,6 +37,7 @@ void Object::update() {
 
     if (m_useLight) {
         glUniform1i(use_light, true);
+        glUniform1i(gamma, GammaCorrection);
         updateLight();
     } else {
         glUniform1i(use_light, false);
