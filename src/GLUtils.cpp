@@ -55,7 +55,7 @@ GLuint loadTexture(const char* path) {
                       if (data) stbi_image_free(data);
                   });
 
-    std::cout << "loadTexture w : " <<  w  << " h : " <<  h << std::endl;
+    // std::cout << "loadTexture w : " <<  w  << " h : " <<  h << std::endl;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -88,7 +88,6 @@ GLuint loadTexture(const char* path) {
     //生成纹理
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, w, h, 0, dataFormat, GL_UNSIGNED_BYTE, data.get());
     glGenerateMipmap(GL_TEXTURE_2D);
-    std::cout << "loadTexture texture : " << texture << std::endl;
 
     return texture;
 }

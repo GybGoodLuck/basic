@@ -13,8 +13,8 @@ public:
 
     void renderLoop();
 
-    void addObject(const std::shared_ptr<Object>& object);
-    void removeObject(const std::shared_ptr<Object>& object);
+    void addObject(const Object::Ptr& object);
+    void removeObject(const Object::Ptr& object);
 
     int getFPS() { 
         return m_fps;
@@ -33,11 +33,11 @@ private:
     float lastFrame = 0.0f;
     int m_fps = 0;
 
-    std::vector<std::shared_ptr<Object>> m_renderList;
+    std::vector<Object::Ptr> m_renderList;
 
     GLFWwindow* m_GLWindow;
 
-    void update(const std::shared_ptr<Object>& object);
+    void update(const Object::Ptr& object);
 
     void processInput();
 

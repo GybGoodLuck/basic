@@ -9,6 +9,8 @@
 class Object {
 
 public:
+    using Ptr = std::shared_ptr<Object>;
+
     Object(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute, bool useLight = false);
     virtual ~Object() {};
 
@@ -73,6 +75,7 @@ protected:
 
     VAO m_vao;
     VBO m_vbo;
+    EBO m_ebo;
     int m_indexCount;
 
     GLuint m_program;

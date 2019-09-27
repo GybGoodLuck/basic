@@ -1,6 +1,7 @@
 #include "Vertices.h"
 
 VerticesBuffer Vertices::getVerticesBuffer(ObjectType type) {
+
     auto buffer = findVAO(type);
 
     if (!buffer.isVaild()) {

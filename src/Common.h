@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -14,7 +17,24 @@ enum ObjectType {
     FONT,
     PLANE,
     CUBE,
-    SPHERE
+    SPHERE,
+    MODEL,
+    MESH
+};
+
+struct Texture {
+    unsigned int id;
+    std::string type;
+    std::string path;
+};
+
+struct Vertex {
+    // position
+    glm::vec3 Position;
+    // texCoords
+    glm::vec2 TexCoords;
+    // normal
+    glm::vec3 Normal;
 };
 
 struct ObjectAttribute {
@@ -27,4 +47,11 @@ struct ObjectAttribute {
     float alpha = 1.0f;
 
     int textureID;
+};
+
+struct MeshData {
+    std::string name;
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    std::vector<Texture> textures;
 };

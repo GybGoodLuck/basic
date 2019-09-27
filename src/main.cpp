@@ -10,6 +10,7 @@
 #include "object/Font.h"
 #include "object/Cube.h"
 #include "object/Sphere.h"
+#include "object/Model.h"
 
 #include "Common.h"
 
@@ -54,7 +55,7 @@ int main(int, char**) {
     std::string windowPath = "image/window.png";
     windowPath = RES_PATH + windowPath;
     windowAttribute.textureID = loadTexture(windowPath.c_str());
-    windowAttribute.pos = {-2.5f, -0.1f, -2.0f};
+    windowAttribute.pos = {-2.0f, -0.0f, -2.0f};
     windowAttribute.quat = glm::angleAxis(glm::radians(270.0f), axis) * windowAttribute.quat;
     windowAttribute.scale = {0.3f, 0.4f, 0.3f};
     auto windowPlane = make_shared<Plane>("window", camera, windowAttribute, true);
@@ -100,6 +101,17 @@ int main(int, char**) {
     auto lightCube2 = make_shared<Cube>("light2", camera, lightAttribute);
     lightCube2->init();
 
+    ObjectAttribute modelAttribute;
+    modelAttribute.pos = {0.0f, -0.3f, -4.0f};
+    modelAttribute.quat *= glm::angleAxis(glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelAttribute.quat *= glm::angleAxis(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    modelAttribute.scale = {0.1f, 0.12f, 0.1f};
+    fontAttribute.color = {0.0f, 0.0f, 0.0f};
+    std::string nanosuitPath = "model/nanosuit/nanosuit.obj";
+    nanosuitPath = RES_PATH + nanosuitPath;
+    auto model = std::make_shared<Model>("model", camera, modelAttribute, nanosuitPath);
+    model->init();
+
     window->addObject(plane);
     window->addObject(yzqPlane);
     window->addObject(cube);
@@ -107,6 +119,7 @@ int main(int, char**) {
     window->addObject(lightCube);
     window->addObject(lightCube2);
     window->addObject(windowPlane);
+    window->addObject(model);
     window->addObject(font);
     window->renderLoop();
     
