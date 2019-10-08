@@ -102,14 +102,13 @@ int main(int, char**) {
     lightCube2->init();
 
     ObjectAttribute modelAttribute;
-    modelAttribute.pos = {0.0f, -0.3f, -4.0f};
+    modelAttribute.pos = {0.0f, -0.5f, -4.0f};
     modelAttribute.quat *= glm::angleAxis(glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     modelAttribute.quat *= glm::angleAxis(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    modelAttribute.scale = {0.1f, 0.12f, 0.1f};
-    fontAttribute.color = {0.0f, 0.0f, 0.0f};
+    modelAttribute.scale = {0.1f, 0.13f, 0.1f};
     std::string nanosuitPath = "model/nanosuit/nanosuit.obj";
     nanosuitPath = RES_PATH + nanosuitPath;
-    auto model = std::make_shared<Model>("model", camera, modelAttribute, nanosuitPath);
+    auto model = std::make_shared<Model>("model", camera, modelAttribute, nanosuitPath, false);
     model->init();
 
     window->addObject(plane);

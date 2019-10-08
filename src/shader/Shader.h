@@ -141,7 +141,8 @@ void main()
 
         FragColor = vec4(result, mcolor.a);
     } else {
-        FragColor = mcolor;
+        FragColor.xyz = mcolor.xyz;
+        FragColor.w = 1.0;
     }
 }
 )";
