@@ -137,6 +137,8 @@ void Window::update(const std::shared_ptr<Object>& object) {
                 }
                 break;
             }
+        case MODEL:
+            return;
         default:
             break;
     }

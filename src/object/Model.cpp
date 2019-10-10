@@ -20,7 +20,7 @@ void Model::loadModel() {
     }
 
     auto root = scene->mRootNode;
- 
+
     for(unsigned int i = 0; i < root->mNumChildren; i++) {
         processNode(root->mChildren[i], scene);
     }
@@ -36,13 +36,13 @@ void Model::initMeshes() {
         mesh->init();
         m_meshes.push_back(mesh);
     }
-    
 }
 
 void Model::render() {
 
     for (auto mesh : m_meshes)
     {
+        mesh->update();
         mesh->render();
     }
 }
@@ -62,29 +62,30 @@ void Model::processNode(const aiNode* node, const aiScene *scene) {
 }
 
 void Model::processMesh(const aiMesh* mesh, const aiScene *scene) {
-
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
-
+    
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
-        glm::vec3 vector; 
+        glm::vec3 vector;
         // positions
         vector.x = mesh->mVertices[i].x;
         vector.y = mesh->mVertices[i].y;
         vector.z = mesh->mVertices[i].z;
         vertex.Position = vector;
+
         // normals
-        vector.x = mesh->mNormals[i].x;
-        vector.y = mesh->mNormals[i].y;
-        vector.z = mesh->mNormals[i].z;
-        vertex.Normal = vector;
+        if (mesh->HasNormals()) {
+            vector.x = mesh->mNormals[i].x;
+            vector.y = mesh->mNormals[i].y;
+            vector.z = mesh->mNormals[i].z;
+            vertex.Normal = vector;
+        }
 
         if(mesh->mTextureCoords[0]) {
             glm::vec2 vec;
-
             vec.x = mesh->mTextureCoords[0][i].x; 
             vec.y = mesh->mTextureCoords[0][i].y;
             vertex.TexCoords = vec;
@@ -94,7 +95,7 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene) {
 
         vertices.push_back(vertex);
     }
-    
+
     for(unsigned int i = 0; i < mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
 
@@ -104,6 +105,10 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene) {
     }
 
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex]; 
+
+    aiColor3D color;
+    material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+    auto meshColor = glm::vec3(color.r, color.g, color.b);
 
     std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -118,7 +123,7 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene) {
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
     auto name = std::string(mesh->mName.C_Str());
-    m_meshdatas.push_back({name, vertices, indices, textures});
+    m_meshdatas.push_back({name, meshColor, vertices, indices, textures});
 }
 
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {

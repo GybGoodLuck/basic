@@ -40,13 +40,7 @@ private:
     std::vector<MeshData> m_meshdatas;
     std::vector<Mesh::Ptr> m_meshes;
 
-    std::string m_name;
-    Camera::Ptr m_camera;
-    ObjectAttribute m_attribute;
-
     std::string m_directory;
-
-    bool m_useLight = false;
 
     void loadModel();
     void initMeshes();

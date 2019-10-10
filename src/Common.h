@@ -51,6 +51,7 @@ struct ObjectAttribute {
 
 struct MeshData {
     std::string name;
+    glm::vec3 color;
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;

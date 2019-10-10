@@ -27,6 +27,7 @@ void Mesh::init() {
     glBindVertexArray(0);
 
     m_indexCount = m_data.indices.size();
+    m_attribute.color = m_data.color;
 }
 
 void Mesh::render() {
