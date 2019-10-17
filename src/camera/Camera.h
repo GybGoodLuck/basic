@@ -56,6 +56,6 @@ private:
     CameraInfo m_cameraInfo;
     Projection m_projection;
 
-    float m_speed = 0.5f;
+    float m_speed = 1.0f;
     float m_rotateSpeed = 0.225f;
 };

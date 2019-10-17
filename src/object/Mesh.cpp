@@ -28,6 +28,10 @@ void Mesh::init() {
 
     m_indexCount = m_data.indices.size();
     m_attribute.color = m_data.color;
+    m_data.pos = m_attribute.quat * m_data.pos;
+    m_attribute.pos += m_data.pos * m_attribute.scale;
+    m_attribute.scale = m_data.scale * m_attribute.scale;
+    m_attribute.quat *= m_data.qua;
 }
 
 void Mesh::render() {
@@ -39,5 +43,5 @@ void Mesh::render() {
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }

@@ -130,11 +130,7 @@ void Window::update(const std::shared_ptr<Object>& object) {
             }
         case CUBE:
             {
-                if (object->getName() == "cube") {
-                    glm::vec3 axis = {1.0f, 0.0f, 1.0f};
-                    auto rotate = glm::angleAxis(glm::radians(1.0f), axis);
-                    object->setQua(rotate * object->getQua());
-                }
+                if (object->getName() == "cube") { }
                 break;
             }
         case MODEL:

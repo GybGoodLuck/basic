@@ -102,38 +102,40 @@ int main(int, char**) {
     lightCube2->init();
 
     ObjectAttribute modelAttribute;
-    modelAttribute.pos = {0.0f, -0.5f, -4.0f};
+    modelAttribute.pos = {0.0f, -0.5f, -6.0f};
     modelAttribute.quat *= glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    modelAttribute.scale = {0.1f, 0.13f, 0.1f};
+    modelAttribute.scale = {0.2f, 0.26f, 0.2f};
     std::string modelPath = "model/Bambo_House.blend";
     modelPath = RES_PATH + modelPath;
-    auto model = std::make_shared<Model>("model", camera, modelAttribute, modelPath, false);
+    auto model = std::make_shared<Model>("model", camera, modelAttribute, modelPath, true);
     model->init();
 
-    modelAttribute.pos = {0.2f, 1.0f, -4.5f};
-    modelAttribute.scale = {0.05f, 0.065f, 0.05f};
+    modelAttribute.pos = {-2.0f, 2.5f, -5.0f};
+    modelAttribute.scale = {0.1f, 0.13f, 0.1f};
+    modelAttribute.quat = glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelAttribute.quat *= glm::angleAxis(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     std::string uh60Path = "model/UH60/uh60.obj";
     uh60Path = RES_PATH + uh60Path;
-    auto uh60 = std::make_shared<Model>("model", camera, modelAttribute, uh60Path, false);
+    auto uh60 = std::make_shared<Model>("model", camera, modelAttribute, uh60Path, true);
     uh60->init();
 
-    modelAttribute.pos = {1.0f, -0.75f, -1.5f};
-    modelAttribute.scale = {0.015f, 0.02f, 0.015f};
+    modelAttribute.pos = {0.5f, -0.5f, -1.0f};
+    modelAttribute.scale = {0.054f, 0.072f, 0.054f};
+    modelAttribute.quat = glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     std::string treePath = "model/trees/trees9.3ds";
     treePath = RES_PATH + treePath;
     auto tree = std::make_shared<Model>("model", camera, modelAttribute, treePath, true);
     tree->init();
 
     window->addObject(plane);
-    window->addObject(yzqPlane);
     window->addObject(cube);
     window->addObject(sphere);
-    window->addObject(lightCube);
-    window->addObject(lightCube2);
     window->addObject(windowPlane);
     window->addObject(model);
     window->addObject(uh60);
     window->addObject(tree);
+    window->addObject(lightCube);
+    window->addObject(lightCube2);
     window->addObject(font);
     window->renderLoop();
     

@@ -48,24 +48,51 @@ void Model::render() {
 }
 
 void Model::processNode(const aiNode* node, const aiScene *scene) {
+    auto name = std::string(node->mName.C_Str());
+
+    auto t_matrix = node->mTransformation;
+
+    // scale
+    auto t_scaling_x = aiVector3D(t_matrix.a1, t_matrix.a2, t_matrix.a3).Length();
+    auto t_scaling_y = aiVector3D(t_matrix.b1, t_matrix.b2, t_matrix.b3).Length();
+    auto t_scaling_z = aiVector3D(t_matrix.c1, t_matrix.c2, t_matrix.c3).Length();
+    glm::vec3 scale = {t_scaling_x, t_scaling_y, t_scaling_z};
+
+    // pos
+    auto pos = t_matrix * aiVector3D(0, 0, 0);
+
+    // quat
+    t_matrix.Transpose();
+    glm::mat4 mTrans = {
+        t_matrix.a1 / t_scaling_x, t_matrix.a2 / t_scaling_x, t_matrix.a3 / t_scaling_x, t_matrix.a4,
+        t_matrix.b1 / t_scaling_y, t_matrix.b2 / t_scaling_y, t_matrix.b3 / t_scaling_y, t_matrix.b4,
+        t_matrix.c1 / t_scaling_z, t_matrix.c2 / t_scaling_z, t_matrix.c3 / t_scaling_z, t_matrix.c4,
+        t_matrix.d1, t_matrix.d2, t_matrix.d3, t_matrix.d4
+    };
+    
+    MeshData data;
+    data.name = name;
+    data.pos = {pos.x, pos.y, pos.z};
+    data.qua = glm::normalize(glm::quat_cast(mTrans));
+    data.scale = scale;
 
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         auto mesh = scene->mMeshes[node->mMeshes[i]];
-        processMesh(mesh, scene);
+        processMesh(mesh, scene, data);
     }
-
+    
     for(unsigned int i = 0; i < node->mNumChildren; i++)
     {
         processNode(node->mChildren[i], scene);
     }
 }
 
-void Model::processMesh(const aiMesh* mesh, const aiScene *scene) {
+void Model::processMesh(const aiMesh* mesh, const aiScene *scene, MeshData& meshData) {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
-    
+
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
@@ -84,7 +111,7 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene) {
             vertex.Normal = vector;
         }
 
-        if(mesh->mTextureCoords[0]) {
+        if(mesh->HasTextureCoords(0)) {
             glm::vec2 vec;
             vec.x = mesh->mTextureCoords[0][i].x; 
             vec.y = mesh->mTextureCoords[0][i].y;
@@ -98,9 +125,10 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene) {
 
     for(unsigned int i = 0; i < mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
-
+        
         for(unsigned int j = 0; j < face.mNumIndices; j++) {
-            indices.push_back(face.mIndices[j]);
+            indices.push_back(face.mIndices[j]); 
+
         }
     }
 
@@ -122,8 +150,11 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene) {
     std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-    auto name = std::string(mesh->mName.C_Str());
-    m_meshdatas.push_back({name, meshColor, vertices, indices, textures});
+    meshData.color = meshColor;
+    meshData.vertices = vertices;
+    meshData.indices = indices;
+    meshData.textures = textures;
+    m_meshdatas.push_back(meshData);
 }
 
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
