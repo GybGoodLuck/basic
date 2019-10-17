@@ -22,7 +22,7 @@ struct Projection {
 
 struct CameraInfo
 {
-    glm::vec3 pos = {0.0f, 0.2f, 0.0f};
+    glm::vec3 pos = {0.0f, 2.0f, 0.0f};
     glm::quat quat = {0.0f, 0.0f, 0.0f, 1.0f};
     glm::vec3 dir = {0.0f, 0.0f, 1.0f};
     glm::vec3 up = {0.0f, 1.0f, 0.0f};
@@ -56,6 +56,6 @@ private:
     CameraInfo m_cameraInfo;
     Projection m_projection;
 
-    float m_speed = 1.0f;
+    float m_speed = 2.0f;
     float m_rotateSpeed = 0.225f;
 };

@@ -36,8 +36,8 @@ int main(int, char**) {
     std::string path = "image/car.jpg";
     path = RES_PATH + path;
     groundAttribute.textureID = loadTexture(path.c_str());
-    groundAttribute.pos = {0.0f, 0.0f, 0.0f};
-    groundAttribute.scale = {14.2f, 1.0f, 8.0f};
+    groundAttribute.pos = {0.0f, -1.0f, 0.0f};
+    groundAttribute.scale = {244.0f, 1.0f, 160.0f};
     auto plane = make_shared<Plane>("ground", camera, groundAttribute, true);
     plane->init();
 
@@ -102,8 +102,9 @@ int main(int, char**) {
     lightCube2->init();
 
     ObjectAttribute modelAttribute;
-    modelAttribute.pos = {0.0f, -0.5f, -6.0f};
-    modelAttribute.quat *= glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelAttribute.pos = {0.5f, -0.5f, -6.0f};
+    modelAttribute.quat *= glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelAttribute.quat *= glm::angleAxis(glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     modelAttribute.scale = {0.2f, 0.26f, 0.2f};
     std::string modelPath = "model/Bambo_House.blend";
     modelPath = RES_PATH + modelPath;
@@ -119,13 +120,21 @@ int main(int, char**) {
     auto uh60 = std::make_shared<Model>("model", camera, modelAttribute, uh60Path, true);
     uh60->init();
 
-    modelAttribute.pos = {0.5f, -0.5f, -1.0f};
+    modelAttribute.pos = {1.5f, -0.5f, -1.0f};
     modelAttribute.scale = {0.054f, 0.072f, 0.054f};
     modelAttribute.quat = glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     std::string treePath = "model/trees/trees9.3ds";
     treePath = RES_PATH + treePath;
     auto tree = std::make_shared<Model>("model", camera, modelAttribute, treePath, true);
     tree->init();
+
+    ObjectAttribute cityAttribute;
+    cityAttribute.pos = {-20.0f, 0.0f, -50.0f};
+    cityAttribute.scale = {0.3f, 0.4f, 0.3f};
+    std::string cityPath = "model/Organodron City/Organodron City.obj";
+    cityPath = RES_PATH + cityPath;
+    auto city = std::make_shared<Model>("model", camera, cityAttribute, cityPath, true);
+    city->init();
 
     window->addObject(plane);
     window->addObject(cube);
@@ -134,6 +143,7 @@ int main(int, char**) {
     window->addObject(model);
     window->addObject(uh60);
     window->addObject(tree);
+    window->addObject(city);
     window->addObject(lightCube);
     window->addObject(lightCube2);
     window->addObject(font);
