@@ -47,6 +47,7 @@ struct ObjectAttribute {
     float alpha = 1.0f;
 
     int textureID = 0;
+    int envTextureID = 0;
 };
 
 struct MeshData {

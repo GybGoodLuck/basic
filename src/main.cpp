@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <vector>
 
 #include <Config.h>
 
@@ -57,7 +58,7 @@ int main(int, char**) {
     windowAttribute.textureID = loadTexture(windowPath.c_str());
     windowAttribute.pos = {-2.0f, -0.0f, -2.0f};
     windowAttribute.quat = glm::angleAxis(glm::radians(270.0f), axis) * windowAttribute.quat;
-    windowAttribute.scale = {0.3f, 0.4f, 0.3f};
+    windowAttribute.scale = {0.3f, 0.3f, 0.3f};
     auto windowPlane = make_shared<Plane>("window", camera, windowAttribute, true);
     windowPlane->init();
 
@@ -71,17 +72,41 @@ int main(int, char**) {
     ObjectAttribute cubeAttribute;
     cubeAttribute.pos = {-3.0f, 0.2f, -1.0f};
     cubeAttribute.color = {0.2f, 0.5f, 0.2f};
-    cubeAttribute.scale = {0.3f, 0.4f, 0.3f};
+    cubeAttribute.scale = {0.3f, 0.3f, 0.3f};
     std::string gamePath = "image/container.jpg";
     gamePath = RES_PATH + gamePath;
     cubeAttribute.textureID = loadTexture(gamePath.c_str());
     auto cube = make_shared<Cube>("cube", camera, cubeAttribute, true);
     cube->init();
 
+    cubeAttribute.pos = {0.0f, 2.0f, 5.0f};
+    cubeAttribute.scale = {1.5f, 1.5f, 1.5f};
+
+    std::vector<std::string> faces;
+    std::string envPath = "image/skybox/";
+    envPath = RES_PATH + envPath;
+    std::string bottom = envPath + "bottom.jpg";
+    std::string back = envPath + "back.jpg";
+    std::string front = envPath + "front.jpg";
+    std::string left = envPath + "left.jpg";
+    std::string right = envPath + "right.jpg";
+    std::string top = envPath + "top.jpg";
+
+    faces.push_back(right);
+    faces.push_back(left);
+    faces.push_back(top);
+    faces.push_back(bottom);
+    faces.push_back(front);
+    faces.push_back(back);
+
+    cubeAttribute.envTextureID = loadCubemap(faces);
+    auto refCube = make_shared<Cube>("refCube", camera, cubeAttribute, false, true);
+    refCube->init();
+
     ObjectAttribute sphereAttribute;
     sphereAttribute.pos = {3.0f, 0.2f, -1.0f};
     sphereAttribute.color = {1.0f, 1.0f, 1.0f};
-    sphereAttribute.scale = {0.3f, 0.4f, 0.3f};
+    sphereAttribute.scale = {0.3f, 0.3f, 0.3f};
     std::string spherePath = "image/grass.jpeg";
     spherePath = RES_PATH + spherePath;
     sphereAttribute.textureID = loadTexture(spherePath.c_str());
@@ -91,13 +116,13 @@ int main(int, char**) {
     ObjectAttribute lightAttribute;
     lightAttribute.pos = light->getPos();
     lightAttribute.color = light->getColor();
-    lightAttribute.scale = {0.15f, 0.2f, 0.15f};
+    lightAttribute.scale = {0.15f, 0.15f, 0.15f};
     auto lightCube = make_shared<Sphere>("light1", camera, lightAttribute);
     lightCube->init();
 
     lightAttribute.pos = light2->getPos();
     lightAttribute.color = light2->getColor();
-    lightAttribute.scale = {0.15f, 0.2f, 0.15f};
+    lightAttribute.scale = {0.15f, 0.15f, 0.15f};
     auto lightCube2 = make_shared<Cube>("light2", camera, lightAttribute);
     lightCube2->init();
 
@@ -105,14 +130,14 @@ int main(int, char**) {
     modelAttribute.pos = {0.5f, -0.5f, -6.0f};
     modelAttribute.quat *= glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     modelAttribute.quat *= glm::angleAxis(glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    modelAttribute.scale = {0.2f, 0.26f, 0.2f};
+    modelAttribute.scale = {0.2f, 0.2f, 0.2f};
     std::string modelPath = "model/Bambo_House.blend";
     modelPath = RES_PATH + modelPath;
     auto model = std::make_shared<Model>("model", camera, modelAttribute, modelPath, true);
     model->init();
 
     modelAttribute.pos = {-2.0f, 2.5f, -5.0f};
-    modelAttribute.scale = {0.1f, 0.13f, 0.1f};
+    modelAttribute.scale = {0.1f, 0.1f, 0.1f};
     modelAttribute.quat = glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     modelAttribute.quat *= glm::angleAxis(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     std::string uh60Path = "model/UH60/uh60.obj";
@@ -121,7 +146,7 @@ int main(int, char**) {
     uh60->init();
 
     modelAttribute.pos = {1.5f, -0.5f, -1.0f};
-    modelAttribute.scale = {0.054f, 0.072f, 0.054f};
+    modelAttribute.scale = {0.05f, 0.05f, 0.05f};
     modelAttribute.quat = glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     std::string treePath = "model/trees/trees9.3ds";
     treePath = RES_PATH + treePath;
@@ -129,8 +154,8 @@ int main(int, char**) {
     tree->init();
 
     ObjectAttribute cityAttribute;
-    cityAttribute.pos = {-20.0f, 0.0f, -50.0f};
-    cityAttribute.scale = {0.3f, 0.4f, 0.3f};
+    cityAttribute.pos = {-10.0f, 0.0f, -50.0f};
+    cityAttribute.scale = {0.3f, 0.3f, 0.3f};
     std::string cityPath = "model/Organodron City/Organodron City.obj";
     cityPath = RES_PATH + cityPath;
     auto city = std::make_shared<Model>("model", camera, cityAttribute, cityPath, true);
@@ -138,6 +163,7 @@ int main(int, char**) {
 
     window->addObject(plane);
     window->addObject(cube);
+    window->addObject(refCube);
     window->addObject(sphere);
     window->addObject(windowPlane);
     window->addObject(model);

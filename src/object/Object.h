@@ -11,7 +11,9 @@ class Object {
 public:
     using Ptr = std::shared_ptr<Object>;
 
-    Object(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute, bool useLight = false);
+    Object(const std::string& name, const Camera::Ptr& camera, 
+        const ObjectAttribute& attribute, bool useLight = false, 
+        bool useReflect = false);
     virtual ~Object() {};
 
     virtual ObjectType type() = 0;
@@ -71,6 +73,7 @@ protected:
     ObjectAttribute m_attribute;
 
     bool m_useLight = false;
+    bool m_useReflect = false;
     bool m_blinn = true;
 
     VAO m_vao;
@@ -90,6 +93,7 @@ protected:
     GLint color;
 
     GLint use_light;
+    GLint use_reflect;
     GLint light_size;
     GLint light_pos;
     GLint light_color;

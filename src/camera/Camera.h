@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "../Common.h"
+
 enum CameraMovement {
     FORWARD,
     BACKWARD,
@@ -17,7 +19,7 @@ struct Projection {
     float near = 0.1f;
     float far = 200.f;
     float fov = glm::radians(45.f);
-    float aspect = 1.0f;
+    float aspect = (float)SCR_WIDTH / (float)SCR_HEIGHT;
 };
 
 struct CameraInfo

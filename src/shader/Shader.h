@@ -70,6 +70,7 @@ in vec2 TexCoords;
 in vec3 normal;
 
 uniform sampler2D texture1;
+uniform samplerCube textureEnv;
 uniform vec4 color;
 
 uniform vec3 lightPos[10];
@@ -79,6 +80,7 @@ uniform vec3 cameraPos;
 uniform bool gamma;
 uniform bool blinn;
 uniform bool useLight;
+uniform bool useReflect;
 uniform int lightSize;
 
 vec3 BlinnPhong(vec3 normal, vec3 pos, vec3 lightPos, vec3 lightColor, bool blinn)
@@ -140,6 +142,10 @@ void main()
             result = pow(result, vec3(1.0/2.2));
 
         FragColor = vec4(result, mcolor.a);
+    } else if (useReflect) {
+        vec3 I = normalize(pos.xyz - cameraPos);
+        vec3 R = reflect(I, normalize(normal));
+        FragColor = vec4(texture(textureEnv, R).rgb, 1.0);
     } else {
         FragColor.xyz = mcolor.xyz;
         FragColor.w = 1.0;

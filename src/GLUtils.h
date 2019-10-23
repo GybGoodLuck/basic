@@ -15,11 +15,14 @@
 #include <stdio.h>
 #include <memory>
 #include <iostream>
+#include <vector>
 
 GLint createProgram(const char* vShader, const char* fShader);
 
 GLint loadShader(GLenum shaderType, const char* pSource);
 
 GLuint loadTexture(const char* path);
+
+GLuint loadCubemap(std::vector<std::string> faces);
 
 void checkCompileErrors(GLuint shader, std::string type);

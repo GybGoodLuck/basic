@@ -1,8 +1,10 @@
 #include "Object.h"
 #include "../Common.h"
 
-Object::Object(const std::string& name, const Camera::Ptr& camera, const ObjectAttribute& attribute, bool useLight) 
-        : m_name(name), m_camera(camera), m_attribute(attribute), m_useLight(useLight) {    
+Object::Object(const std::string& name, const Camera::Ptr& camera, 
+        const ObjectAttribute& attribute, bool useLight, bool useReflect) 
+        : m_name(name), m_camera(camera), m_attribute(attribute), 
+        m_useLight(useLight), m_useReflect(useReflect) {    
     m_program = createProgram(verticesSource, fragmentSource);
     getUniformLocation();
 }
@@ -13,6 +15,8 @@ void Object::getUniformLocation() {
     projection = glGetUniformLocation(m_program, "projection");
     color = glGetUniformLocation(m_program, "color");
     use_light = glGetUniformLocation(m_program, "useLight");
+    use_reflect = glGetUniformLocation(m_program, "useReflect");
+    camera_pos = glGetUniformLocation(m_program, "cameraPos");
 
     if (m_useLight) {
         light_size = glGetUniformLocation(m_program, "lightSize");
@@ -20,7 +24,6 @@ void Object::getUniformLocation() {
         light_color = glGetUniformLocation(m_program, "lightColor");
         blinn = glGetUniformLocation(m_program, "blinn");
         gamma = glGetUniformLocation(m_program, "gamma");
-        camera_pos = glGetUniformLocation(m_program, "cameraPos");
     }
 }
 
@@ -37,6 +40,12 @@ void Object::update() {
     } else {
         glUniform1i(use_light, false);
     }
+
+    if (m_useReflect) {
+        glUniform1i(use_reflect, true);
+    } else {
+        glUniform1i(use_reflect, false);
+    }
 }
 
 void Object::updateLocation() {
@@ -44,6 +53,7 @@ void Object::updateLocation() {
     m_model = glm::translate(m_model, m_attribute.pos);
     m_model = glm::scale(m_model, m_attribute.scale);
     m_model = m_model * glm::mat4_cast(m_attribute.quat);
+
     glUniformMatrix4fv(model, 1, GL_FALSE, glm::value_ptr(m_model));
 }
 
@@ -57,13 +67,13 @@ void Object::updateCamera() {
 
     glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(m_projection));
     glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(m_view));
+
+    glUniform3f(camera_pos, info.pos.x, info.pos.y, info.pos.z);
 }
 
 void Object::updateLight() {
-    auto cameraPos = m_camera->getCameraInfo().pos;
     glUniform1i(light_size, LightManager::getInstance()->getSize());
     glUniform3fv(light_pos, LightManager::getInstance()->getSize(), (GLfloat*) LightManager::getInstance()->getPositions());
     glUniform3fv(light_color, LightManager::getInstance()->getSize(), (GLfloat*) LightManager::getInstance()->getColors());
     glUniform1i(blinn, m_blinn);
-    glUniform3f(camera_pos, cameraPos.x, cameraPos.y, cameraPos.z);
 }

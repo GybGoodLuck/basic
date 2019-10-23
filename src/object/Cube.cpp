@@ -7,9 +7,17 @@ void Cube::init() {
 }
 
 void Cube::render() {
-    glBindTexture(GL_TEXTURE_2D, m_attribute.textureID);
+
+    if (m_useReflect) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_attribute.envTextureID);
+    } else {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m_attribute.textureID);
+    }
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, m_indexCount);
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
