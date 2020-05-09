@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+#include <iostream>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -50,13 +52,20 @@ struct ObjectAttribute {
     int envTextureID = 0;
 };
 
+struct BoneData {
+    uint ids[4] = {0, 0, 0, 0};
+    float weights[4] = {0, 0, 0, 0};
+};
+
 struct MeshData {
     std::string name;
     glm::vec3 color;
-    glm::vec3 pos;
-    glm::quat qua;
-    glm::vec3 scale;
+    glm::mat4 transformation;
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
+    std::vector<glm::mat4> boneOffsets;
+    std::vector<BoneData> boneDatas;
 };
+
+void printGLMMatrix(const glm::mat4 matrix);

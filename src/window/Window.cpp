@@ -72,6 +72,7 @@ void Window::removeObject(const std::shared_ptr<Object>& object) {
 
 int count = 0;
 auto start = std::chrono::system_clock::now();
+auto animationStart = std::chrono::system_clock::now();
 void Window::renderLoop() {
 
     while(!glfwWindowShouldClose(m_GLWindow)) {
@@ -85,17 +86,9 @@ void Window::renderLoop() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
-        for (auto object : m_renderList)
-        {
-            update(object);
-            object->render();
-        }
-
-        glfwSwapBuffers(m_GLWindow);
-        glfwPollEvents();
-
         auto end = std::chrono::system_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        auto animationDuration = std::chrono::duration_cast<std::chrono::milliseconds>(end - animationStart);
 
         count++;
 
@@ -104,6 +97,16 @@ void Window::renderLoop() {
             start = std::chrono::system_clock::now();
             count = 0;
         }
+
+        for (auto object : m_renderList)
+        {
+            object->setRunningTime(float(animationDuration.count() / 1000.0));
+            update(object);
+            object->render();
+        }
+
+        glfwSwapBuffers(m_GLWindow);
+        glfwPollEvents();
     }
 
     glfwTerminate();

@@ -3,6 +3,7 @@
 typedef unsigned int VAO;
 typedef unsigned int VBO;
 typedef unsigned int EBO;
+typedef unsigned int BBO;
 
 static const float planeVertices[] = {
     // positions                    

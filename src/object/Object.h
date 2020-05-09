@@ -21,10 +21,19 @@ public:
     virtual void init() = 0;
 
     virtual void update();
+    virtual void updateBones();
 
     std::string getName() const {
         return m_name;
     };
+
+    void setRunningTime(float runningTime) {
+        m_runningTime = runningTime;
+    }
+
+    float getRunnintTime() {
+        return m_runningTime;
+    }
 
     void setPos(const glm::vec3& pos) {
         m_attribute.pos = pos;
@@ -66,8 +75,17 @@ public:
         return m_attribute.textureID;
     };
 
+    glm::vec3 getScale() const {
+        return m_attribute.scale;
+    }
+
+    void setScale(const glm::vec3 scale) {
+        m_attribute.scale = scale;
+    }
+
 protected:
     std::string m_name;
+    float m_runningTime;
 
     Camera::Ptr m_camera;
     ObjectAttribute m_attribute;
@@ -79,6 +97,7 @@ protected:
     VAO m_vao;
     VBO m_vbo;
     EBO m_ebo;
+    BBO m_bbo;
     int m_indexCount;
 
     GLuint m_program;
@@ -90,6 +109,8 @@ protected:
     GLint projection;
     GLint view;
     GLint model;
+    GLint global;
+    GLint globals;
     GLint color;
 
     GLint use_light;
@@ -101,6 +122,8 @@ protected:
     GLint gamma;
 
     GLint camera_pos;
+
+    GLint bones;
 
     void getUniformLocation();
     void updateLocation();

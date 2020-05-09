@@ -17,16 +17,16 @@ enum CameraMovement {
 
 struct Projection {
     float near = 0.1f;
-    float far = 200.f;
-    float fov = glm::radians(45.f);
+    float far = 2000.f;
+    float fov = glm::radians(90.f);
     float aspect = (float)SCR_WIDTH / (float)SCR_HEIGHT;
 };
 
 struct CameraInfo
 {
-    glm::vec3 pos = {0.0f, 2.0f, 0.0f};
+    glm::vec3 pos = {0.0f, 0.0f, 2.0f};
     glm::quat quat = {0.0f, 0.0f, 0.0f, 1.0f};
-    glm::vec3 dir = {0.0f, 0.0f, 1.0f};
+    glm::vec3 dir = {0.0f, 0.0f, -1.0f};
     glm::vec3 up = {0.0f, 1.0f, 0.0f};
 };
 
@@ -58,6 +58,6 @@ private:
     CameraInfo m_cameraInfo;
     Projection m_projection;
 
-    float m_speed = 2.0f;
+    float m_speed = 10.0f;
     float m_rotateSpeed = 0.225f;
 };

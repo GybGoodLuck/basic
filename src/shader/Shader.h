@@ -43,20 +43,39 @@ static const char verticesSource[] = R"(
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 aTexCoords;
 layout (location = 2) in vec3 aNormal;
+layout (location = 3) in ivec4 aBoneIDs;
+layout (location = 4) in vec4 aWeights;
 
 out vec4 pos;
 out vec2 TexCoords;
 out vec3 normal;
 
+const int MAX_BONES = 100;
+
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 global;
+uniform mat4 bones[MAX_BONES];
+uniform mat4 globals[MAX_BONES];
 
 void main() {
     TexCoords = aTexCoords;
-    pos = model * vec4(aPos, 1.0);
-    gl_Position = projection * view * pos;
-    normal = mat3(transpose(inverse(model))) * aNormal;
+    
+    if ((aWeights[0] + aWeights[1] + aWeights[2] + aWeights[3]) == 0.0f) {
+        pos = model * global * vec4(aPos, 1.0);
+    } else {
+        mat4 boneTransform = bones[aBoneIDs[0]] * aWeights[0];
+        boneTransform += bones[aBoneIDs[1]] * aWeights[1];
+        boneTransform += bones[aBoneIDs[2]] * aWeights[2];
+        boneTransform += bones[aBoneIDs[3]] * aWeights[3];
+        pos = model * boneTransform * vec4(aPos, 1.0);
+    }
+
+    pos = model * global * vec4(aPos, 1.0);
+    gl_Position = projection * view  * pos;
+    vec4 bNormal = vec4(aNormal, 0.0);
+    normal = mat3(transpose(inverse(model))) * bNormal.xyz;
 }
 )";
 
@@ -147,8 +166,8 @@ void main()
         vec3 R = reflect(I, normalize(normal));
         FragColor = vec4(texture(textureEnv, R).rgb, 1.0);
     } else {
-        FragColor.xyz = mcolor.xyz;
-        FragColor.w = 1.0;
+        FragColor.rgb = mcolor.rgb;
+        FragColor.a = 1.0;
     }
 }
 )";

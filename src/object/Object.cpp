@@ -13,10 +13,13 @@ void Object::getUniformLocation() {
     model = glGetUniformLocation(m_program, "model");
     view = glGetUniformLocation(m_program, "view");
     projection = glGetUniformLocation(m_program, "projection");
+    global = glGetUniformLocation(m_program, "global");
+    globals = glGetUniformLocation(m_program, "globals");
     color = glGetUniformLocation(m_program, "color");
     use_light = glGetUniformLocation(m_program, "useLight");
     use_reflect = glGetUniformLocation(m_program, "useReflect");
     camera_pos = glGetUniformLocation(m_program, "cameraPos");
+    bones = glGetUniformLocation(m_program, "bones");
 
     if (m_useLight) {
         light_size = glGetUniformLocation(m_program, "lightSize");
@@ -31,6 +34,7 @@ void Object::update() {
     glUseProgram(m_program);
     updateLocation();
     updateCamera();
+    updateBones();
     glUniform4f(color, m_attribute.color.x, m_attribute.color.y, m_attribute.color.z, m_attribute.alpha);
 
     if (m_useLight) {
@@ -76,4 +80,8 @@ void Object::updateLight() {
     glUniform3fv(light_pos, LightManager::getInstance()->getSize(), (GLfloat*) LightManager::getInstance()->getPositions());
     glUniform3fv(light_color, LightManager::getInstance()->getSize(), (GLfloat*) LightManager::getInstance()->getColors());
     glUniform1i(blinn, m_blinn);
+}
+
+void Object::updateBones() {
+  glUniformMatrix4fv(global, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0)));
 }

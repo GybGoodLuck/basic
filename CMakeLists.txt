@@ -42,6 +42,7 @@ set(EXECUTABLE_SOURCE
     src/light/LightManager.cpp
     src/controller/Controller.cpp
     src/vertices/Vertices.cpp
+    src/Common.cpp
     src/GLUtils.cpp
     src/main.cpp
 )
