@@ -20,12 +20,30 @@ void Model::init() {
     }
 
     loadModel();
+
+    for (unsigned int i; i < 6; i++) {
+        std::cout << m_sides[i] << " ";
+    }
+    std::cout << std::endl;
+
+    m_box[0] = std::abs(m_sides[0] - m_sides[1]);
+    m_box[1] = std::abs(m_sides[2] - m_sides[3]);
+    m_box[2] = std::abs(m_sides[4] - m_sides[5]);
+
+    float maxLength = std::max(m_box[0], m_box[1]);
+    maxLength = std::max(maxLength, m_box[2]);
+
+    float scale = 1.f / maxLength;
+    std::cout << "scale ： " << scale << std::endl;
+    m_attribute.scale = glm::vec3(scale * m_attribute.scale.x,
+            scale * m_attribute.scale.y, scale * m_attribute.scale.z);
 }
 
 void Model::loadModel() {
     m_rootNode = m_scene->mRootNode;
 
-    std::cout << "mNumAnimations : " << m_scene->mNumAnimations <<std::endl;
+    std::string animName(m_scene->mAnimations[0]->mName.C_Str());
+    std::cout << animName << " : " << m_scene->mNumAnimations <<std::endl;
     if (m_scene->HasAnimations())
     {
         m_animation = m_scene->mAnimations[0];
@@ -50,6 +68,9 @@ void Model::render() {
 
     for (auto mesh : m_meshes)
     {
+        mesh->setScale(m_attribute.scale);
+        mesh->setPos(m_attribute.pos);
+        mesh->setQua(m_attribute.quat);
         mesh->update();
         mesh->render();
     }
@@ -146,6 +167,15 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene, MeshData& mesh
         vector.z = mesh->mVertices[i].z;
         vertex.Position = vector;
 
+        m_sides[0] = std::min(m_sides[0], vector.x);
+        m_sides[1] = std::max(m_sides[1], vector.x);
+
+        m_sides[2] = std::min(m_sides[2], vector.y);
+        m_sides[3] = std::max(m_sides[3], vector.y);
+
+        m_sides[4] = std::min(m_sides[4], vector.y);
+        m_sides[5] = std::max(m_sides[5], vector.y);
+
         // normals
         if (mesh->HasNormals()) {
             vector.x = mesh->mNormals[i].x;
@@ -199,6 +229,7 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene, MeshData& mesh
 
     auto p_mesh = std::make_shared<Mesh>(meshData.name, m_camera, m_attribute);
     m_meshMapping[meshData.name] = p_mesh;
+    p_mesh->addNode(meshData.name);
     meshData.boneDatas.resize(mesh->mNumVertices);
 
     processBone(mesh, p_mesh, &meshData);
@@ -209,22 +240,21 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene, MeshData& mesh
 
 void Model::processBone(const aiMesh* mesh, std::shared_ptr<Mesh> p_mesh, MeshData* meshData) {
  
-    uint m_boneNum = 0;
     meshData->boneOffsets.resize(mesh->mNumBones);
 
     for (uint i = 0 ; i < mesh->mNumBones; i++) {
-        uint boneId = 0; 
-        std::string name(mesh->mBones[i]->mName.C_Str());
 
-        if (m_boneMapping.find(name) == m_boneMapping.end()) {
-            boneId = m_boneNum;
-            m_boneNum++;
+        std::string name(mesh->mBones[i]->mName.C_Str());
+        p_mesh->addBone(name);
+
+        auto boneId = p_mesh->findBone(name);
+
+        if (boneId != -1) {
             meshData->boneOffsets[boneId] = convertMatrix(mesh->mBones[i]->mOffsetMatrix, false);
-            m_boneTransfromations[name] = convertMatrix(mesh->mBones[i]->mOffsetMatrix, false);
-            m_boneMapping[name] = boneId;
-            m_meshMapping[name] = p_mesh;
+            p_mesh->addBoneOffsets(boneId, convertMatrix(mesh->mBones[i]->mOffsetMatrix, false));
+            p_mesh->addNode(name);
         } else {
-            boneId = m_boneMapping[name];
+            std::cout << "error : invaild bone id" << std::endl;
         }
 
         for (uint j = 0 ; j < mesh->mBones[i]->mNumWeights ; j++) {
@@ -361,22 +391,23 @@ void Model::BoneTransform(std::shared_ptr<NodeData> nodeData, float animationTim
         t_matrix = glm::transpose(animatrix);
     }
 
-    m_nodeTransformations[name] = t_matrix;
-
-    auto it = m_boneMapping.find(name);
-    auto p_mesh = m_meshMapping[name];
-    auto globalTrans = glm::inverse(m_rootNodeData->transformation);
-
     t_matrix = t_matrix * parentMatrix;
-    auto bt = t_matrix * globalTrans;
 
-    if (it != m_boneMapping.end()) {
-        auto boneId = it->second;
-        p_mesh->setGlobals(boneId, bt);
-        bt = m_boneTransfromations[name] * bt;
-        p_mesh->setBoneTransformation(boneId, bt);
-    } else {
-        if (p_mesh) p_mesh->setTransformation(bt);
+    for (unsigned int i = 0; i < m_meshes.size(); i++) {
+        auto globalTrans = glm::inverse(m_rootNodeData->transformation);
+        auto bt = t_matrix * globalTrans;
+        auto mesh = m_meshes[i];
+
+        if (mesh->findNode(name)) {
+            auto boneID = mesh->findBone(name);
+
+            if (boneID != -1) {
+                auto boneOffset = mesh->getBoneOffset(boneID);
+                mesh->setBoneTransformation(boneID, boneOffset * bt);
+            }
+
+            mesh->setTransformation(bt);
+        }
     }
 
     for(auto child : nodeData->children) {

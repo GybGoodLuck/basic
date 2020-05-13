@@ -14,7 +14,6 @@ void Object::getUniformLocation() {
     view = glGetUniformLocation(m_program, "view");
     projection = glGetUniformLocation(m_program, "projection");
     global = glGetUniformLocation(m_program, "global");
-    globals = glGetUniformLocation(m_program, "globals");
     color = glGetUniformLocation(m_program, "color");
     use_light = glGetUniformLocation(m_program, "useLight");
     use_reflect = glGetUniformLocation(m_program, "useReflect");

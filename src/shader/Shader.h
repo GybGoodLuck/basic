@@ -57,7 +57,6 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 global;
 uniform mat4 bones[MAX_BONES];
-uniform mat4 globals[MAX_BONES];
 
 void main() {
     TexCoords = aTexCoords;
@@ -72,7 +71,6 @@ void main() {
         pos = model * boneTransform * vec4(aPos, 1.0);
     }
 
-    pos = model * global * vec4(aPos, 1.0);
     gl_Position = projection * view  * pos;
     vec4 bNormal = vec4(aNormal, 0.0);
     normal = mat3(transpose(inverse(model))) * bNormal.xyz;

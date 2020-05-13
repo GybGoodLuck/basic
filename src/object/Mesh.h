@@ -29,17 +29,60 @@ public:
     }
 
     void setBoneTransformation(int boneID, const glm::mat4& boneTransformation) {
-        if (m_boneTransformations.size() == 0) m_boneTransformations.resize(10);
+        if (m_boneTransformations.size() == 0) {
+            m_boneTransformations.resize(100);
+            for (int i = 0; i < 100; i++) {
+                m_boneTransformations[i] = glm::mat4(1.0f);
+            }
+        }
         m_boneTransformations[boneID] = boneTransformation;
     }
 
-    void setGlobals(int boneID, const glm::mat4& global) {
-        if (m_globals.size() == 0) m_globals.resize(10);
-        m_globals[boneID] = global;
+    void addNode(const std::string& name) {
+        m_nodes.push_back(name);
+    }
+
+    bool findNode(const std::string& name) {
+
+        for (auto it = m_nodes.begin(); it != m_nodes.end(); it++) {
+            if ((*it).find(name) == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    void addBone(const std::string& name) {
+
+        auto it = m_bones.find(name);
+
+        if (it == m_bones.end()) {
+            m_bones[name] = boneId++;
+        }
+    }
+
+    int findBone(const std::string& name) {
+        auto it = m_bones.find(name);
+        if (it != m_bones.end()) return it->second;
+        return -1;
+    }
+
+    void addBoneOffsets(uint boneId, const glm::mat4& offset) {
+        m_boneOffsets[boneId] = offset;
+    }
+
+    glm::mat4 getBoneOffset(uint boneId) {
+        auto it = m_boneOffsets.find(boneId);
+        if (it != m_boneOffsets.end()) return it->second;
+        return glm::mat4(1.0f);
     }
     
 private:
+    uint boneId = 0;
     MeshData m_data;
+    std::map<uint, glm::mat4> m_boneOffsets;
     std::vector<glm::mat4> m_boneTransformations;
-    std::vector<glm::mat4> m_globals;
+    std::vector<std::string> m_nodes;
+    std::map<std::string, uint> m_bones;
 };

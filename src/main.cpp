@@ -36,10 +36,9 @@ int main(int, char**) {
     font->init();
 
     ObjectAttribute modelAttribute;
-    modelAttribute.pos = {500.0f, -200.0f, -290.0f};
-
-    modelAttribute.scale = {0.3f, 0.3f, 0.3f};
-    std::string modelPath = "model/jiqiren.FBX";
+    modelAttribute.pos = {0.0f, -1.0f, -10.0f};
+    modelAttribute.scale = {10.f, 10.f, 10.f};
+    std::string modelPath = "model/Agony.fbx";
     modelPath = RES_PATH + modelPath;
     auto model = std::make_shared<Model>("model", camera, modelAttribute, modelPath, true);
     model->init();

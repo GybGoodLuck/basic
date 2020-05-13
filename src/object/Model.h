@@ -8,6 +8,9 @@
 #include "../Common.h"
 #include "../GLUtils.h"
 
+#define MAX_FLOAT 100000000.0f
+#define MIN_FLOAT -100000000.0f
+
 struct VectorKey {
     double time;
     glm::vec3 value;
@@ -73,8 +76,10 @@ private:
     float m_duration;
 
     std::shared_ptr<NodeData> m_rootNodeData;
-
     std::string m_directory;
+
+    float m_box[3];
+    float m_sides[6] = {MAX_FLOAT, MIN_FLOAT, MAX_FLOAT, MIN_FLOAT, MAX_FLOAT, MIN_FLOAT};
 
     void loadModel();
     void processNode(const aiNode* node, const aiScene *scene, const glm::mat4& parentMatrix, std::shared_ptr<NodeData> parentNodeData);

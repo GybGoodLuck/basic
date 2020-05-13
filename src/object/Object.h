@@ -110,7 +110,6 @@ protected:
     GLint view;
     GLint model;
     GLint global;
-    GLint globals;
     GLint color;
 
     GLint use_light;
