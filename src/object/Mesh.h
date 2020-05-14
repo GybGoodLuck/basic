@@ -38,21 +38,6 @@ public:
         m_boneTransformations[boneID] = boneTransformation;
     }
 
-    void addNode(const std::string& name) {
-        m_nodes.push_back(name);
-    }
-
-    bool findNode(const std::string& name) {
-
-        for (auto it = m_nodes.begin(); it != m_nodes.end(); it++) {
-            if ((*it).find(name) == 0) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     void addBone(const std::string& name) {
 
         auto it = m_bones.find(name);
@@ -83,6 +68,5 @@ private:
     MeshData m_data;
     std::map<uint, glm::mat4> m_boneOffsets;
     std::vector<glm::mat4> m_boneTransformations;
-    std::vector<std::string> m_nodes;
     std::map<std::string, uint> m_bones;
 };

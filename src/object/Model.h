@@ -65,7 +65,7 @@ private:
     std::map<std::string, uint> m_boneMapping;
     std::map<std::string, glm::mat4> m_boneTransfromations;
     std::map<std::string, glm::mat4> m_nodeTransformations;
-    std::map<std::string, std::shared_ptr<Mesh>> m_meshMapping;
+    std::map<std::string, std::vector<std::shared_ptr<Mesh>>> m_meshMapping;
 
     Assimp::Importer m_importer;
     const aiScene* m_scene;
@@ -83,7 +83,7 @@ private:
 
     void loadModel();
     void processNode(const aiNode* node, const aiScene *scene, const glm::mat4& parentMatrix, std::shared_ptr<NodeData> parentNodeData);
-    void processMesh(const aiMesh* mesh, const aiScene *scene, MeshData& meshData);
+    void processMesh(const aiMesh* mesh, const aiScene *scene, const std::string& nodeName, const glm::mat4& nodeTransformation);
     void processBone(const aiMesh* mesh, std::shared_ptr<Mesh> p_mesh, MeshData* meshData);
     std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
 

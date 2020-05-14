@@ -62,7 +62,7 @@ void Model::loadModel() {
 
 void Model::render() {
     float timeInTicks = m_runningTime * m_ticksPerSecond;
-    float animationTime = fmod(timeInTicks, m_duration);
+    float animationTime = fmod(timeInTicks, m_duration - 0.4);
 
     BoneTransform(m_rootNodeData, animationTime, glm::mat4(1.0), std::string(m_rootNode->mName.C_Str()));
 
@@ -133,14 +133,10 @@ void Model::processNode(const aiNode* node, const aiScene *scene,
 
     auto nodeTransformation = glm::inverse(convertMatrix(scene->mRootNode->mTransformation, false)) * t_matrix;
 
-    MeshData data;
-    data.name = name;
-    data.transformation = nodeTransformation;
-
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         auto mesh = scene->mMeshes[node->mMeshes[i]];
-        processMesh(mesh, scene, data);
+        processMesh(mesh, scene, name, nodeTransformation);
     }
         
     for(unsigned int i = 0; i < node->mNumChildren; i++)
@@ -149,7 +145,7 @@ void Model::processNode(const aiNode* node, const aiScene *scene,
     }
 }
 
-void Model::processMesh(const aiMesh* mesh, const aiScene *scene, MeshData& meshData) {
+void Model::processMesh(const aiMesh* mesh, const aiScene *scene, const std::string& nodeName, const glm::mat4& nodeTransformation) {
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -222,14 +218,17 @@ void Model::processMesh(const aiMesh* mesh, const aiScene *scene, MeshData& mesh
     std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
+    MeshData meshData;
+    meshData.name = nodeName;
+    meshData.transformation = nodeTransformation;
+
     meshData.color = meshColor;
     meshData.vertices = vertices;
     meshData.indices = indices;
     meshData.textures = textures;
 
-    auto p_mesh = std::make_shared<Mesh>(meshData.name, m_camera, m_attribute);
-    m_meshMapping[meshData.name] = p_mesh;
-    p_mesh->addNode(meshData.name);
+    auto p_mesh = std::make_shared<Mesh>(nodeName, m_camera, m_attribute);
+    m_meshMapping[nodeName].push_back(p_mesh);
     meshData.boneDatas.resize(mesh->mNumVertices);
 
     processBone(mesh, p_mesh, &meshData);
@@ -243,31 +242,32 @@ void Model::processBone(const aiMesh* mesh, std::shared_ptr<Mesh> p_mesh, MeshDa
     meshData->boneOffsets.resize(mesh->mNumBones);
 
     for (uint i = 0 ; i < mesh->mNumBones; i++) {
+        auto pBone = mesh->mBones[i];
 
-        std::string name(mesh->mBones[i]->mName.C_Str());
+        std::string name(pBone->mName.C_Str());
+
         p_mesh->addBone(name);
 
         auto boneId = p_mesh->findBone(name);
 
         if (boneId != -1) {
-            meshData->boneOffsets[boneId] = convertMatrix(mesh->mBones[i]->mOffsetMatrix, false);
-            p_mesh->addBoneOffsets(boneId, convertMatrix(mesh->mBones[i]->mOffsetMatrix, false));
-            p_mesh->addNode(name);
+            meshData->boneOffsets[boneId] = convertMatrix(pBone->mOffsetMatrix, false);
+            p_mesh->addBoneOffsets(boneId, convertMatrix(pBone->mOffsetMatrix, false));
+            m_meshMapping[name].push_back(p_mesh);
         } else {
             std::cout << "error : invaild bone id" << std::endl;
         }
 
-        for (uint j = 0 ; j < mesh->mBones[i]->mNumWeights ; j++) {
-            uint vertexId = mesh->mBones[i]->mWeights[j].mVertexId;
-            float weight  = mesh->mBones[i]->mWeights[j].mWeight;
-            
+        for (uint j = 0 ; j < pBone->mNumWeights ; j++) {
+            uint vertexId = pBone->mWeights[j].mVertexId;
+            float weight  = pBone->mWeights[j].mWeight;
             for (uint k = 0 ; k < 4 ; k++) {
                 if (meshData->boneDatas[vertexId].weights[k] == 0.f) {
                     meshData->boneDatas[vertexId].ids[k] = boneId;
                     meshData->boneDatas[vertexId].weights[k] = weight;
                     break;
                 }
-            }    
+            }
         }
     }
 }
@@ -393,12 +393,15 @@ void Model::BoneTransform(std::shared_ptr<NodeData> nodeData, float animationTim
 
     t_matrix = t_matrix * parentMatrix;
 
-    for (unsigned int i = 0; i < m_meshes.size(); i++) {
-        auto globalTrans = glm::inverse(m_rootNodeData->transformation);
-        auto bt = t_matrix * globalTrans;
-        auto mesh = m_meshes[i];
+    auto itMeshes = m_meshMapping.find(name);
 
-        if (mesh->findNode(name)) {
+    if (itMeshes != m_meshMapping.end()) {
+        auto meshes = itMeshes->second;
+
+        for (unsigned int i = 0; i < meshes.size(); i++) {
+            auto globalTrans = glm::inverse(m_rootNodeData->transformation);
+            auto bt = t_matrix * globalTrans;
+            auto mesh = meshes[i];
             auto boneID = mesh->findBone(name);
 
             if (boneID != -1) {
