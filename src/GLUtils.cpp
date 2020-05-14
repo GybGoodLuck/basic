@@ -55,7 +55,7 @@ GLuint loadTexture(const char* path) {
                       if (data) stbi_image_free(data);
                   });
 
-    // std::cout << "loadTexture w : " <<  w  << " h : " <<  h << std::endl;
+    // std::cout << path << "  width : " <<  w  << " height : " <<  h << std::endl;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 

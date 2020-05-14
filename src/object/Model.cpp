@@ -42,10 +42,10 @@ void Model::init() {
 void Model::loadModel() {
     m_rootNode = m_scene->mRootNode;
 
-    std::string animName(m_scene->mAnimations[0]->mName.C_Str());
-    std::cout << animName << " : " << m_scene->mNumAnimations <<std::endl;
     if (m_scene->HasAnimations())
     {
+        std::string animName(m_scene->mAnimations[0]->mName.C_Str());
+        std::cout << animName << " : " << m_scene->mNumAnimations <<std::endl;
         m_animation = m_scene->mAnimations[0];
         m_ticksPerSecond = (float)(m_animation->mTicksPerSecond != 0 ? m_animation->mTicksPerSecond : 25.0f);
         m_duration = (float)m_animation->mDuration;
@@ -62,7 +62,7 @@ void Model::loadModel() {
 
 void Model::render() {
     float timeInTicks = m_runningTime * m_ticksPerSecond;
-    float animationTime = fmod(timeInTicks, m_duration - 0.4);
+    float animationTime = fmod(timeInTicks, m_duration);
 
     BoneTransform(m_rootNodeData, animationTime, glm::mat4(1.0), std::string(m_rootNode->mName.C_Str()));
 
@@ -405,6 +405,7 @@ void Model::BoneTransform(std::shared_ptr<NodeData> nodeData, float animationTim
             auto boneID = mesh->findBone(name);
 
             if (boneID != -1) {
+                
                 auto boneOffset = mesh->getBoneOffset(boneID);
                 mesh->setBoneTransformation(boneID, boneOffset * bt);
             }
