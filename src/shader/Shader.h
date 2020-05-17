@@ -50,7 +50,7 @@ out vec4 pos;
 out vec2 TexCoords;
 out vec3 normal;
 
-const int MAX_BONES = 100;
+const int MAX_BONES = 200;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -62,16 +62,16 @@ void main() {
     TexCoords = aTexCoords;
     
     if ((aWeights[0] + aWeights[1] + aWeights[2] + aWeights[3]) == 0.0f) {
-        pos = model * global * vec4(aPos, 1.0);
+        pos = global * vec4(aPos, 1.0);
     } else {
         mat4 boneTransform = bones[aBoneIDs[0]] * aWeights[0];
         boneTransform += bones[aBoneIDs[1]] * aWeights[1];
         boneTransform += bones[aBoneIDs[2]] * aWeights[2];
         boneTransform += bones[aBoneIDs[3]] * aWeights[3];
-        pos = model * boneTransform * vec4(aPos, 1.0);
+        pos = boneTransform * vec4(aPos, 1.0);
     }
 
-    gl_Position = projection * view  * pos;
+    gl_Position = projection * view * model * pos;
     vec4 bNormal = vec4(aNormal, 0.0);
     normal = mat3(transpose(inverse(model))) * bNormal.xyz;
 }

@@ -38,7 +38,7 @@ int main(int, char**) {
     ObjectAttribute modelAttribute;
     modelAttribute.pos = {0.0f, -5.0f, -10.0f};
     modelAttribute.scale = {50.f, 50.f, 50.f};
-    std::string modelPath = "model/小姑娘.FBX";
+    std::string modelPath = "model/2b/lufeng.FBX";
     modelPath = RES_PATH + modelPath;
     auto model = std::make_shared<Model>("model", camera, modelAttribute, modelPath, true);
     model->init();

@@ -5,6 +5,7 @@
 class Mesh : public Object {
 
 public:
+    typedef std::shared_ptr<Mesh> Ptr;
     using Object::Object;
     using Object::update;
 
@@ -28,45 +29,25 @@ public:
         m_data.transformation = trans;
     }
 
-    void setBoneTransformation(int boneID, const glm::mat4& boneTransformation) {
-        if (m_boneTransformations.size() == 0) {
-            m_boneTransformations.resize(100);
-            for (int i = 0; i < 100; i++) {
-                m_boneTransformations[i] = glm::mat4(1.0f);
-            }
+    void setBoneTransformations(const std::vector<glm::mat4>& boneTransformations) {
+        auto bs = boneTransformations;
+        for (auto it = m_boneOffsets.begin(); it != m_boneOffsets.end(); it++) {
+            bs[it->first] = it->second * bs[it->first];
         }
-        m_boneTransformations[boneID] = boneTransformation;
+        m_boneTransformations = bs;
     }
 
-    void addBone(const std::string& name) {
-
-        auto it = m_bones.find(name);
-
-        if (it == m_bones.end()) {
-            m_bones[name] = boneId++;
-        }
+    void setGlobalTransform(const glm::mat4& globalTransform) {
+        m_globalTransform = globalTransform;
     }
 
-    int findBone(const std::string& name) {
-        auto it = m_bones.find(name);
-        if (it != m_bones.end()) return it->second;
-        return -1;
-    }
-
-    void addBoneOffsets(uint boneId, const glm::mat4& offset) {
-        m_boneOffsets[boneId] = offset;
-    }
-
-    glm::mat4 getBoneOffset(uint boneId) {
-        auto it = m_boneOffsets.find(boneId);
-        if (it != m_boneOffsets.end()) return it->second;
-        return glm::mat4(1.0f);
+    void setBoneOffset(int boneId, const glm::mat4& boneOffset) {
+        m_boneOffsets[boneId] = boneOffset;
     }
     
 private:
-    uint boneId = 0;
     MeshData m_data;
-    std::map<uint, glm::mat4> m_boneOffsets;
+    glm::mat4 m_globalTransform;
+    std::map<int, glm::mat4> m_boneOffsets;
     std::vector<glm::mat4> m_boneTransformations;
-    std::map<std::string, uint> m_bones;
 };

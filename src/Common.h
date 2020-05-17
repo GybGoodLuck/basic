@@ -64,7 +64,6 @@ struct MeshData {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
-    std::vector<glm::mat4> boneOffsets;
     std::vector<BoneData> boneDatas;
 };
 

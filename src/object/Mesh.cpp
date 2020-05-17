@@ -54,7 +54,7 @@ void Mesh::render() {
 }
 
 void Mesh::updateBones() {
-    glUniformMatrix4fv(global, 1, GL_TRUE, glm::value_ptr(m_data.transformation));
+    glUniformMatrix4fv(global, 1, GL_TRUE, glm::value_ptr(m_globalTransform));
 
     if (m_boneTransformations.size() == 0) return;
     glUniformMatrix4fv(bones, m_boneTransformations.size(), GL_TRUE, (const GLfloat*)(&m_boneTransformations[0]));
